@@ -14,7 +14,7 @@ What if Medium’s editor was faster, smarter, customizable, and open source?, N
 </h3>
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/abdulrahman-mh/textrix?style=social)](https://github.com/abdulrahman-mh/textrix/stargazers)
-![npm](https://img.shields.io/npm/v/textrix)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/textrix)](https://bundlephobia.com/result?p=textrix)
 ![npm](https://img.shields.io/npm/dm/textrix)
 ![License](https://img.shields.io/github/license/abdulrahman-mh/textrix)
 
