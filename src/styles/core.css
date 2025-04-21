@@ -1,0 +1,437 @@
+/*!
+  Description: Core Editor styles
+  Author: (c) Abdulrahman Mahmoud <abdelrahman.mh3@gmail.com>
+  Maintainer: Community Maintained (@abdulrahman-mh, others welcome)
+  License: see project LICENSE
+*/
+
+body,
+html {
+  overflow-x: hidden;
+}
+.textrix blockquote,
+.textrix figure,
+.textrix h1,
+.textrix h2,
+.textrix h3,
+.textrix h4,
+.textrix h5,
+.textrix h6,
+.textrix ol,
+.textrix p,
+.textrix pre,
+.textrix ul {
+  margin: 0;
+}
+.textrix ol,
+.textrix ul {
+  padding: 0;
+}
+
+.textrix {
+  position: relative;
+  box-sizing: content-box;
+  width: 100%;
+  margin-top: 20px;
+  max-width: 700px;
+  padding-inline: calc((100% - 700px) / 2);
+  white-space: break-spaces;
+  word-break: break-word;
+  word-wrap: break-word;
+  -webkit-font-variant-ligatures: none;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0; /* the above doesn't seem to work in Edge */
+}
+
+@media only screen and (max-width: 740px) {
+  .textrix {
+    box-sizing: border-box;
+    padding-inline: 20px;
+    max-width: 100%;
+  }
+}
+
+.textrix [dir="ltr"] {
+  text-align: left;
+}
+.textrix [dir="rtl"] {
+  text-align: right;
+}
+
+.textrix a {
+  text-decoration: underline;
+}
+
+.textrix.editing a {
+  cursor: text;
+  text-decoration: none;
+  background-repeat: repeat-x;
+  background-image: url('data:image/svg+xml;utf8,<svg preserveAspectRatio="none" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="1" y2="1" stroke="currentColor" /></svg>');
+  background-size: 1px 1px;
+  background-position: 0 calc(1em + 2px);
+  color: inherit;
+}
+
+.textrix pre {
+  white-space: pre-wrap;
+}
+
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror [contenteditable="false"] {
+  white-space: normal;
+}
+.ProseMirror [contenteditable="false"] [contenteditable="true"] {
+  white-space: pre-wrap;
+}
+
+img.ProseMirror-separator {
+  display: inline !important;
+  border: none !important;
+  margin: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+@keyframes ProseMirror-cursor-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.ProseMirror-hideselection *::selection {
+  background: transparent;
+}
+
+.ProseMirror-hideselection *::-moz-selection {
+  background: transparent;
+}
+
+.ProseMirror-hideselection * {
+  caret-color: transparent;
+}
+
+.ProseMirror-focused .ProseMirror-gapcursor {
+  display: block;
+}
+
+/* ----------- Headline Set ----------- */
+.title[data-placeholder]::before {
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.subtitle[data-placeholder]::before {
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: 0;
+  font-size: 28px;
+  line-height: 1.22;
+}
+
+.kicker,
+.title,
+.subtitle {
+  position: relative;
+}
+
+span.heading-label::after {
+  content: "";
+  height: 100%;
+  position: absolute;
+  top: 0;
+  inset-inline-end: 100%;
+  margin-inline: 15px;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+.kicker .heading-label::after {
+  height: calc(100% + 5px);
+}
+.title .heading-label::after {
+  height: calc(100% + 5px);
+}
+
+span.heading-label::before {
+  content: attr(data-heading-label);
+  position: absolute;
+  inset-inline-end: 100%;
+  margin-inline-end: 30px;
+  word-break: keep-all;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 400;
+  font-style: normal;
+  z-index: 50;
+}
+.kicker .heading-label::before {
+  top: 4px;
+}
+.title .heading-label::before {
+  top: 19px;
+}
+.subtitle .heading-label::before {
+  top: 11px;
+}
+
+/* ------------ Drag Placeholder  ------------ */
+.drag-placeholder {
+  width: 200px;
+  top: 0;
+  left: 0;
+  position: absolute;
+  transform: translate(-100%, -100%);
+  border: 0;
+  box-sizing: border-box;
+}
+.drag-placeholder > img {
+  display: block;
+  position: relative;
+  margin: auto;
+  max-width: 100%;
+}
+
+/* ----------------- Popover ----------------- */
+.popover {
+  position: absolute;
+  width: max-content;
+  z-index: 900;
+  padding: 15px;
+  overflow: hidden;
+}
+
+/* TODO: Make while resizing the window, add `is-resizing` class to the editor */
+.is-resizing .popover {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.3s, opacity 0.3s 0s;
+}
+
+.popover > .popover-arrow {
+  position: absolute;
+  opacity: 1;
+  visibility: visible;
+}
+
+.popover.bottom > .popover-arrow {
+  clip-path: polygon(-4px 0px, 18px 0px, 18px 14px, -4px 14px);
+  top: 1px;
+}
+.popover.top > .popover-arrow {
+  clip-path: polygon(-4px 0px, 18px 0px, 18px 18px, -4px 18px);
+  bottom: 1px;
+}
+
+.popover > .popover-arrow::after {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+}
+
+.popover.top .popover-arrow::after {
+  transform: rotate(45deg) translate(-5px, -5px);
+  box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.84);
+}
+
+.popover.bottom .popover-arrow::after {
+  transform: rotate(45deg) translate(6px, 6px);
+  box-shadow: -1px -1px 1px -1px rgba(0, 0, 0, 0.54);
+}
+
+.popover > .popover-inner {
+  position: relative;
+  padding: 8px 0;
+  overflow: auto;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.35);
+  -webkit-overflow-scrolling: touch;
+}
+
+.popover.dark > .popover-inner {
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  background-image: linear-gradient(to bottom, rgba(49, 49, 47, 0.99), #262625);
+  background-repeat: repeat-x;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.popover.dark > .popover-arrow:after {
+  background: rgba(0, 0, 0, 0.84);
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.popover.dark .popover-description {
+  color: #fff;
+}
+
+.popover.link > .popover-inner {
+  padding: 8px;
+}
+.popover.link a {
+  outline: 0;
+  color: inherit;
+  text-decoration: none;
+  background-color: transparent;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* -------------- Other ---------------- */
+
+@media print {
+  .floatingMenu {
+    display: none;
+  }
+}
+
+[data-placeholder]::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  pointer-events: none;
+  z-index: -100;
+  font-weight: 400;
+}
+
+figure {
+  position: relative;
+  outline: 0;
+  box-sizing: border-box;
+  user-select: auto;
+  display: block;
+  z-index: 500;
+}
+
+.images-grid {
+  width: 1032px;
+  margin-left: calc(50% - 516px);
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+@media screen and (max-width: 1032px) {
+  .images-grid {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+}
+
+.textrix > figure {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%) !important;
+}
+
+.aspectRatioPlaceholder {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.aspectRatioPlaceholder-fill {
+  display: block;
+}
+.aspectRatioPlaceholder img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 0;
+}
+
+.iframeContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  max-width: 100%;
+}
+
+/* TODO: post-edit mode */
+.iframeContainer > iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+  margin: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.iframeContainer::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 400;
+  content: "";
+}
+
+figcaption {
+  margin-inline: auto;
+  text-align: center;
+  position: relative;
+  -webkit-nbsp-mode: normal;
+  display: none;
+}
+
+figcaption:not(.isEmpty),
+figure.is-selected > figcaption,
+.images-grid.is-selected figure:first-child > figcaption {
+  display: block;
+}
+
+.images-grid figcaption {
+  position: absolute;
+}
+
+[data-layout="inset-center"] + figcaption {
+  width: 700px;
+}
+
+[data-layout="outset-center"] + figcaption {
+  width: 1032px;
+}
+
+[data-layout="fill-width"] + figcaption,
+[data-layout="grid"] + figcaption {
+  width: 1000px;
+}
+
+figcaption[data-placeholder]::before {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.svgIcon.svgIcon--19px {
+  line-height: 19px;
+  height: 19px;
+}
+.svgIcon.svgIcon--21px {
+  line-height: 21px;
+  height: 21px;
+}
+.svgIcon.svgIcon--25px {
+  line-height: 25px;
+  height: 25px;
+}

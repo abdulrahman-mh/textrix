@@ -1,0 +1,211 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@config "../tailwind.config.js";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+    Noto Color Emoji;
+}
+
+.container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: 1360px;
+  width: 100%;
+}
+
+h2,
+h3 {
+  scroll-margin-top: 6rem;
+}
+
+[data-doc-toc] li:not(:first-child) {
+  margin-top: 10px;
+}
+
+.floating-ui-btn {
+  transform: rotate(0);
+  transition: transform 0.1s, -webkit-transform 0.1s;
+}
+
+.floating-ui-btn.is-scaled {
+  transition: transform 250ms, -webkit-transform 250ms;
+  transform: rotate(45deg);
+}
+
+code[data-theme*=" "],
+code[data-theme*=" "] span {
+  color: var(--shiki-light);
+  /* background-color: var(--shiki-light-bg); */
+}
+
+/* We currently not support dark mode.*/
+/* @media (prefers-color-scheme: dark) {
+  code[data-theme*=' '],
+  code[data-theme*=' '] span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
+} */
+
+.mdx-content {
+  @apply pt-10;
+
+  h1 {
+    @apply text-4xl lg:text-5xl md:text-[3rem] leading-tight truncate;
+  }
+
+  h2 > a {
+    @apply text-2xl lg:text-[2rem] md:text-[2rem] no-underline;
+  }
+
+  h2 code,
+  h3 code {
+    @apply font-bold break-words;
+  }
+
+  h3 > a,
+  h4 > a {
+    @apply no-underline;
+  }
+
+  code {
+    @apply font-medium text-gray-800 before:hidden after:hidden;
+  }
+
+  :not(pre) > code {
+    @apply rounded px-1.5 py-1;
+  }
+
+  blockquote p:first-of-type::before {
+    content: none;
+  }
+
+  img,
+  figure {
+    @apply m-0;
+  }
+
+  .card {
+    @apply max-w-full md:max-w-[calc(50%-5px)];
+  }
+
+  a code {
+    @apply text-inherit;
+  }
+
+  a:has(code) {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  pre {
+    @apply relative px-6 py-4 leading-loose text-base md:text-sm md:leading-[2.1] lg:text-[0.9375rem] bg-[rgb(243,243,247)] border;
+  }
+
+  pre > code {
+    @apply grid shadow-none text-inherit;
+  }
+
+  [data-line] {
+    @apply mx-[-1.5rem] px-6;
+  }
+
+  [data-rehype-pretty-code-figure] {
+    @apply relative;
+  }
+
+  pre::before {
+    @apply absolute right-0 top-0 text-[0.7rem] p-1 font-black uppercase leading-none rounded-bl-md grid place-items-center;
+    content: attr(data-language);
+  }
+
+  /* Language colors */
+  pre[data-language="html"]::before {
+    @apply bg-[#e34c26] text-white;
+  }
+
+  pre[data-language="css"]::before {
+    @apply bg-[#264de4] text-white;
+  }
+
+  pre[data-language="js"]::before {
+    @apply bg-[#ffe936] text-black;
+  }
+
+  pre[data-language="ts"]::before {
+    @apply bg-[#007acc] text-white;
+  }
+
+  pre[data-language="bash"]::before {
+    @apply bg-gray-600 text-white;
+  }
+
+  pre[data-language="vue"]::before {
+    @apply bg-[#6fedb6] text-black;
+  }
+
+  /* Highlighted lines/chars */
+  [data-highlighted-line] {
+    @apply border-l-4 border-rose-400 bg-orange-50 dark:bg-violet-100/10;
+  }
+
+  [data-highlighted-chars] {
+    @apply bg-orange-100 dark:bg-[rgba(200,200,255,0.2)] rounded px-1 z-0;
+    box-shadow: 0 0 0 1px theme("colors.orange.100");
+  }
+
+  [data-chars-id="a"] {
+    @apply bg-rose-100 text-rose-900 border-b border-rose-300 dark:bg-rose-800 dark:text-rose-200 dark:border-rose-500;
+  }
+
+  [data-chars-id="b"] {
+    @apply bg-cyan-100 text-cyan-900 border-b border-cyan-300 dark:bg-cyan-800 dark:text-cyan-200 dark:border-cyan-500;
+  }
+
+  [data-chars-id="c"] {
+    @apply bg-purple-100 text-purple-900 border-b border-purple-300 dark:bg-purple-800 dark:text-purple-200 dark:border-purple-500;
+  }
+
+  [data-chars-id] {
+    @apply border-b border-transparent shadow-none p-1;
+  }
+
+  [data-chars-id] > span {
+    @apply text-inherit;
+  }
+
+  span {
+    @apply relative z-10;
+  }
+
+  code {
+    @apply text-inherit bg-none whitespace-pre border-0;
+  }
+}

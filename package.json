@@ -1,0 +1,113 @@
+{
+  "name": "textrix",
+  "description": "A powerful, customizable Medium-style publishing editor.",
+  "version": "0.1.1",
+  "keywords": [
+    "textrix",
+    "medium-editor",
+    "prosemirror",
+    "wysiwyg",
+    "rich-text-editor",
+    "content-publishing",
+    "publishing-tool",
+    "story-editor",
+    "text-editor",
+    "online-publishing",
+    "editor-for-writers",
+    "seamless-editor",
+    "medium-proeditor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdulrahman-mh/textrix"
+  },
+  "homepage": "https://textrix.vercel.app",
+  "author": "Abdulrahman Mahmoud",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/es/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/es/index.js",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./features": {
+      "types": "./dist/types/features/index.d.ts",
+      "import": "./dist/es/features.js",
+      "require": "./dist/cjs/features.cjs"
+    },
+    "./themes/textrix.min.css": "./dist/themes/textrix.min.css"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "webpack serve",
+    "stats": "serve ./build-stats/",
+    "lint": "biome lint ./src",
+    "lint:fix": "biome lint --write ./src",
+    "lint:staged": "lint-staged",
+    "format": "npm biome format --write ./src",
+    "prepublishOnly": "npm run build",
+    "reset": "npm run clean && rm -rf ./**/.cache && rm -rf ./**/node_modules && rm -rf ./package-lock.json && npm install",
+    "prepare": "husky",
+    "clean": "rm -rf dist dev-dist build-stats",
+    "build:css": "postcss src/styles/*.css --dir dist/themes --base src/styles --ext .min.css --env production",
+    "build": "npm run clean && rollup -c && npm run build:css"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
+    "@biomejs/biome": "1.9.4",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^9.2.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^7.1.2",
+    "cssnano": "^7.0.6",
+    "file-loader": "^6.2.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "postcss": "^8.5.1",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0",
+    "rollup": "^2.79.2",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "serve": "^14.2.4",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.6.13",
+    "debounce": "^2.2.0",
+    "highlight.js": "^11.11.1",
+    "linkifyjs": "^4.2.0",
+    "micromark-util-sanitize-uri": "^2.0.1",
+    "prosemirror-commands": "^1.6.2",
+    "prosemirror-history": "^1.4.1",
+    "prosemirror-keymap": "^1.2.2",
+    "prosemirror-model": "^1.24.1",
+    "prosemirror-schema-list": "^1.5.0",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-transform": "^1.10.2",
+    "prosemirror-view": "^1.37.2",
+    "zeed-dom": "^0.15.1"
+  }
+}

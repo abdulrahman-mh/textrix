@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2023",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "dist/types",
+    "outDir": "dist",
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
