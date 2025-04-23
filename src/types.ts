@@ -13,6 +13,7 @@ import type { Editor } from "./Editor";
 import type { Icons } from "./util/icons";
 import type { Feature } from "./Feature";
 
+// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export interface Commands {}
 
 export interface SchemaOptions extends EditorOptionsBase {
@@ -20,6 +21,7 @@ export interface SchemaOptions extends EditorOptionsBase {
   published?: boolean;
 }
 
+// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 interface EditorOptionsBase {}
 
 export interface EditorOptions extends EditorOptionsBase {
@@ -41,7 +43,7 @@ export interface EditorOptions extends EditorOptionsBase {
   /**
    * Toggle default formats. Disable formats by setting values to false.
    *
-   * @example:
+   * @example
    * // This disables `<h3>` and blockquotes while keeping all other formats active.
    * formats: { h3: false, quote: false }
    */
