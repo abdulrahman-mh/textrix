@@ -1,0 +1,54 @@
+name: Release and Publish to NPM
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    name: Release and Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Update jsDelivr CDN links in documentation
+        run: |
+          FILE=website/app/doc/getting-started/page.mdx # Getting Started page
+          VERSION=${{ steps.version.outputs.VERSION }}
+          echo "Updating Textrix CDN version in $FILE to $VERSION"
+
+          # Replace @old-version with @new-version for all textrix CDN links
+          sed -i "s|\(https://cdn.jsdelivr.net/npm/textrix@\)[^/]*|\1$VERSION|g" "$FILE"
+
+      - name: Commit and push updated CDN links
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add website/app/doc/getting-started/page.mdx
+          git commit -m "chore: update jsDelivr CDN links to v${{ steps.version.outputs.VERSION }}"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org/"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
