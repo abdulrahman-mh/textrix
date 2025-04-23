@@ -1,1 +1,49 @@
-## Code Block
+# Code Block
+
+The Code Block feature lets you insert syntax-highlighted code blocks. It supports automatic language detection or manual language selection with
+real-time highlighting using **Highlight.js**.
+
+---
+
+## Usage
+
+Enable the feature by importing it into your editor setup:
+
+```js /CodeBlock/
+import { Editor } from 'textrix';
+import { CodeBlock } from 'textrix/features';
+
+const editor = new Editor({
+  element: document.querySelector('.myEditor'),
+  features: [CodeBlock],
+});
+```
+
+## Writing a Code Block
+
+You can add a code block by:
+
+- Typing ` ``` ` on a new line (input rule)
+- Using the **Floating Menu**
+- Pressing `⌘ + ⌥ + 6` (or `Ctrl + Alt + 6` on Windows)
+
+## Available Languages
+
+Includes over 40 popular languages like:
+
+```css
+JavaScript, TypeScript, Python, HTML, CSS, Go, PHP, Rust, SQL, Dart, Swift, Bash...
+```
+
+## Menu Options
+
+You can customize or disable the Code Block menu item via the **Floating Menu**:
+
+```js /CodeBlock/
+FloatingMenu.configure({
+  codeBlock: {
+    icon: 'custom-code-icon',
+    priority: 400,
+  },
+});
+```

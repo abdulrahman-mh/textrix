@@ -1,1 +1,104 @@
-## Features & Plugins
+# Features
+
+👈 Explore the features using the menu on the left.
+
+Textrix comes with a rich set of built-in **features** (a.k.a plugins), but we call them _features_ because they more internal thing then external.
+
+Everything you need to build a complete, modern editor is included in the main `textrix` package. You can also create your own plugins, and only
+bundle the features you actually use. 😊
+
+## ✍️ What You Get
+
+The editor supports both **content elements** and **inline formatting** like:
+
+- Paragraphs, headings, blockquotes, and lists
+- Inline styles like **bold**, _italic_, `inline code`, and [@mentions](#)
+
+By default, the editor includes [basic features](#built-in-features) like paragraphs and bold formatting and they are called formats. However, you can
+easily exclude any features you don't need using the `formats` option in the editor settings. Just set the feature to `false` to remove it.
+
+Additionally, Textrix offers [interactive features](#additional-features) like:
+
+- [Media](/doc/meida) Embed images, auto-upload to your CDN, or drop in videos (YouTube, Vimeo, Tweets, etc.)
+- 😊 [Emoji Picker](/doc/emoji) Type `:` to open a searchable emoji menu
+- [Code Block](/doc/code-block) Add and format code snippets, with highlight
+
+…and more to explore!
+
+<Notice>
+Be careful not to exclude core features, as it might affect the editor’s functionality.
+</Notice>
+
+## Adding a New Feature
+
+Import any features you need from `textrix/features`, then list them in the `features` array when creating your editor:
+
+{/* prettier-ignore */}
+```js
+import { Editor } from 'textrix';
+import { Media, BubbleMenu, FloatingMenu, Emoji, CodeBlock } from 'textrix/features';
+
+const editor = new Editor({
+  element: document.body,
+  features: [
+    Media,
+    BubbleMenu,
+    FloatingMenu,
+    Emoji,
+    CodeBlock
+  ]
+});
+```
+
+## Configuring Features
+
+All features support options via a `.configure(){:js}` method, For example, here's how to upload inserted images to your CDN using the [Media](/doc/media)
+feature:
+
+{/* prettier-ignore */}
+```js
+// Function to upload editor image to my CDN
+const uploadImage = async ({ file }) => {
+  const imageUrl = uploadToMyCDN(file);
+
+  // Return the URL of the uploaded image from the CDN
+  return { url: imageUrl };
+};
+
+const editor = new Editor({
+  features: [
+    Media.configure({ uploadImage })
+  ],
+});
+```
+
+You can add options to any feature using `.configure(){:js}`, or simply use the default settings if you don’t need customizations.
+
+## Built-in Features
+
+Here’s a list of all the built-in features that come with Textrix. You can easily exclude any of them by adjusting the `formats` option in the editor
+settings:
+
+- **core**: Core editor functionality (Required)
+- **h3**: Large heading (`<h3>`).
+- **h4**: Small heading (`<h4>`).
+- **bold**: Bold text (`<strong>`).
+- **italic**: Italic text (`<em>`).
+- **link**: Hyperlinks (`<a>`).
+- **quote**: Blockquotes and pull quotes (`<blockquote>`).
+- **br**: Line break (`<br>`).
+- **code**: Inline code (`<code>`).
+- **divider**: Section divider (`<hr>`).
+- **lists**: Bullet and numbered lists (`<ul>`, `<ol>`).
+
+## Additional Features
+
+Textrix also includes a variety of optional features that you can import and plug into the editor:
+
+- [Media](/doc/media): Embed images, videos (Youtube, Vimeo etc.), Tweets, websites, etc.
+- [Bubble Menu](/doc/bubble-menu): Add a toolbar that pops up above the text and media
+- [Floating Menu](/doc/floating-menu): Make a toolbar appear automagically on empty lines.
+- [Code Block](/doc/code-block): Add and format code snippets, with highlight
+- [Emoji](/doc/emoji): Type `:` to open a searchable emoji menu
+
+And there's more to come! Want to contribute your own feature? [Check out the repo here](https://github.com/abdulrahman-mh/textrix).

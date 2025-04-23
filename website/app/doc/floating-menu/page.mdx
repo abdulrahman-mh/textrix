@@ -1,1 +1,43 @@
-## Floating Menu
+# 🎈 Floating Menu
+
+The Floating Menu shows a toolbar automatically when you're on an empty line, to insert media, dividers, or code blocks as you write.
+
+---
+
+## Usage
+
+Import and enable the feature in your editor setup:
+
+```js /FloatingMenu/
+import { Editor } from 'textrix';
+import { FloatingMenu } from 'textrix/features';
+
+const editor = new Editor({
+  element: document.querySelector('.myEditor'),
+  features: [FloatingMenu],
+});
+```
+
+## Customizing the Menu
+
+You can disable or customize menu items. You can also change their icon or priority (order):
+
+```js /FloatingMenu/
+FloatingMenu.configure({
+  unsplash: false, // Hide Unsplash item
+
+  image: {
+    icon: 'custom-image-icon', // Use a custom icon
+    priority: 200, // Move item higher in the list
+  },
+});
+```
+
+## Available Menu Items
+
+- `image`: Upload an image from your device
+- `unsplash`: Insert an image from **Unsplash**
+- `video`: Embed a video (YouTube, Vimeo, etc.)
+- `embed`: Embed rich content (Tweet, CodePen, etc.)
+- `codeBlock`: Insert a formatted code block
+- `newPart`: Add a horizontal divider (Section break)

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -20,6 +21,7 @@
     "rehype-autolink-headings": "^7.1.0",
     "rehype-pretty-code": "^0.14.1",
     "rehype-slug": "^6.0.0",
+    "remove": "^0.1.5",
     "shiki": "^3.2.2"
   },
   "devDependencies": {
@@ -32,7 +34,18 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
+    "prettier": "^3.5.3",
+    "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.1.4",
     "typescript": "^5"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "printWidth": 150,
+    "proseWrap": "always",
+    "trailingComma": "es5",
+    "bracketSpacing": true
   }
 }

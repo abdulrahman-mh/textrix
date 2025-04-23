@@ -1,1 +1,44 @@
-## Bubble Menu
+# 🫧 Bubble Menu
+
+The Bubble Menu shows a floating toolbar when you select text or media. You can use it to format text or change media layout with just a click.
+
+---
+
+## Usage
+
+Import and enable it in your editor setup:
+
+```js /BubbleMenu/
+import { Editor } from 'textrix';
+import { BubbleMenu } from 'textrix/features';
+
+const editor = new Editor({
+  element: document.querySelector('.myEditor'),
+  features: [BubbleMenu],
+});
+```
+
+## Customizing the Menu
+
+You can hide, reorder, or customize any item in the menu:
+
+```js /BubbleMenu/
+BubbleMenu.configure({
+  bold: false, // hide the bold button
+
+  italic: {
+    icon: 'custom-italic-icon', // use a custom icon
+    divider: true, // add a divider after
+    priority: 500, // show this earlier in the list
+  },
+});
+```
+
+## Available Menu Items
+
+- `bold`: Toggle **bold**
+- `italic`: Toggle _italic_
+- `link`: Add/edit a link
+- `h3`: Apply heading level 3
+- `h4`: Apply heading level 4
+- `quote`: Add a blockquote or pullquote

@@ -1,0 +1,25 @@
+# 😀 Emoji Picker
+
+The **Emoji Picker** menu allows you to insert emojis by typing `:` and then start search for your emoji. It supports more than **1500+ emojis** and
+displays suggestions as you type. Once selected, the emoji is inserted into your content.
+
+---
+
+## Usage
+
+Enable the feature by importing it into your editor setup:
+
+```js /Emoji/
+import { Editor } from 'textrix';
+import { Emoji } from 'textrix/features';
+
+const editor = new Editor({
+  element: document.querySelector('.myEditor'),
+  features: [Emoji],
+});
+```
+
+### 💡 Pro Tip
+
+If you type the full emoji name between two columns like `:simle:`, the editor automatically will insert 😊, and if you just paste this text it will
+insert it to

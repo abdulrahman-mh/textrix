@@ -5,10 +5,9 @@ module.exports = {
       typography: () => ({
         DEFAULT: {
           css: {
-            "--tw-prose-body": "rgb(13,13,13)",
-            "--tw-prose-invert-body": "#B0B2C3",
-            "--tw-prose-bullets": "rgb(13,13,13)",
-            "--tw-prose-invert-bullets": "#B0B2C3",
+            '--tw-prose-headings': 'var(--color-text-dark)',
+            '--tw-prose-body': 'var(--color-text-dark)',
+            '--tw-prose-pre-bg': 'var(--color-code-block)',
           },
         },
       }),

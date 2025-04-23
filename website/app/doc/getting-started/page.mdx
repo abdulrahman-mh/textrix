@@ -1,111 +1,104 @@
-## Getting Started
+# Getting Started
 
-**Install Textrix**:
+Textrix is a lightweight, powerful, and flexible rich-text editor built for modern web apps.  
+It's easy to set up, easy to theme, and easy to extend with your own features.
+
+---
+
+## Textrix Editor
+
+Textrix works in all modern browsers. Drop it into your frontend, pick the built-in features you need, and apply your preferred theme. _(Only one
+theme available for now, but more are coming soon!)_
+
+Textrix comes with powerful, customizable **plugins** you can import and add to your editor, like: [Bubble Menu](/doc/bubble-menu) 🫧,
+[Floating Menu](/doc/floating-menu) 🎈, [Emoji Picker](/doc/emoji) 😊, [Code Block](/doc/code-block) \</> , and many more.
+
+It supports multiple output formats:
+
+- **JSON** &ndash; To track user changes and document state
+- **HTML** &ndash; Generate static HTML from the JSON doc, to render articles, blogs and stories
+- **Plain Text** &ndash; Just the raw content
+
+## Textrix on the Backend
+
+Textrix plays well with Node.js too!
+
+Use it to:
+
+- Validate and manage rich-text documents
+- Extract metadata (like **title**, **subtitle**, or **featured image**)
+- Generate the HTML for publishing
+
+All this thing also works well on the Editor, but you can use it on the backend to add a layer of security.
+
+Great for headless CMSs, static site generators, and custom pipelines.
+
+## Design
+
+Textrix is modular and flexible. It works both in the browser and on the backend with _Node.js_. You can use as much or as little of the features on
+your editor as you want, and your bundle size will adapt.
+
+Textrix is also **Framework-Agnostic**, use it on **React**, **Vue**, **Svelte**, or **Plain Javascript**
+
+## 📦 Installation
+
+To install Textrix, you can use a package manager like npm or a CDN
+
+### Using NPM
 
 ```bash
 npm install textrix
 ```
 
-**Plain javascript usage**:
+### Using CDN
 
-```javascript
-import "textrix/themes/textrix.min.css"; // Import themes
+Load Textrix directly from the CDN, available in both ESM and UMD formats.
 
-import { Editor } from "textrix";
+#### ESM
 
-// Import some features
-import { BubbleMenu, FloatingMenu, Media, Emoji } from "textrix/features";
-
-const editor = new Editor({
-  element: document.querySelector(".myEditor"),
-
-  // Add some features to your editor
-  features: [
-    BubbleMenu, // Add a toolbar that pops up above the text
-    FloatingMenu, // Make a toolbar appear automagically on empty lines
-    Media, // Adds support for embedding media (images, videos, etc.)
-    Emoji, // Add Emoji menu, type ':' to select your emoji
-  ],
-});
+```js
+import { Editor } from 'https://cdn.jsdelivr.net/npm/textrix@0.1.1/dist/es/index.js';
+import { BubbleMenu, FloatingMenu, Media } from 'https://cdn.jsdelivr.net/npm/textrix@0.1.1/dist/es/features.js';
 ```
 
-**React Usage**:
+#### UMD
 
-```javascript
-import "textrix/themes/textrix.min.css";
+```html
+<script src="https://cdn.jsdelivr.net/npm/textrix@0.1.1/dist/umd/editor.min.js"></script>
 
-import { useEffect, useRef } from "react";
+<!-- Common features in one script: BubbleMenu, FloatingMenu, CodeBlock, Media, Emoji -->
+<script src="https://cdn.jsdelivr.net/npm/textrix@0.1.1/dist/umd/features/common.min.js"></script>
 
-import { Editor } from "textrix";
-import { BubbleMenu, FloatingMenu } from "textrix/features";
-
-const EditorComponent = () => {
-  const editorRef = useRef(null);
-  const [editor, setEditor] = useState(null); // Store editor instance
-
-  useEffect(() => {
-    if (editorRef.current) {
-      // Create an editor instance
-      const editor = new Editor({
-        element: editorRef.current,
-        features: [BubbleMenu, FloatingMenu],
-      });
-      setEditor(editor);
-    }
-
-    // Cleanup the editor
-    return () => {
-      editor?.destroy();
-      setEditor(null);
-    };
-  }, []);
-
-  return (
-    <div>
-      <h1>Textrix Editor in React</h1>
-      <div ref={editorRef} />
-    </div>
-  );
-};
+<!-- and it's easy to individually load additional features -->
+<script src="https://cdn.jsdelivr.net/npm/textrix@0.1.1/dist/umd/features/emoji.min.js"></script>
 ```
 
-## Editor Keyboard Shortcuts
+Common features will be available in `CommonFeature{:js}` var, use it like `CommonFeature.Emoji{:js}`
 
-| Feature                 | Mac Shortcut                                                    | Windows/Linux Shortcut                          |
-| ----------------------- | --------------------------------------------------------------- | ----------------------------------------------- |
-| **Text Formatting**     |                                                                 |                                                 |
-| **Bold** (**B**)        | <kbd>⌘</kbd> + <kbd>B</kbd>                                     | <kbd>Ctrl</kbd> + <kbd>B</kbd>                  |
-| _Italic_ (_I_)          | <kbd>⌘</kbd> + <kbd>I</kbd>                                     | <kbd>Ctrl</kbd> + <kbd>I</kbd>                  |
-| Add Link                | <kbd>⌘</kbd> + <kbd>K</kbd>                                     | <kbd>Ctrl</kbd> + <kbd>K</kbd>                  |
-| Header (H1)             | <kbd>⌘</kbd> + <kbd>Opt</kbd> + <kbd>1</kbd>                    | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>1</kbd> |
-| Subheader (H2)          | <kbd>⌘</kbd> + <kbd>Opt</kbd> + <kbd>2</kbd>                    | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>2</kbd> |
-| Blockquote              | <kbd>⌘</kbd> + <kbd>Opt</kbd> + <kbd>5</kbd>                    | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>5</kbd> |
-| Horizontal Line         | <kbd>⌘</kbd> + <kbd>Enter</kbd>                                 | <kbd>Ctrl</kbd> + <kbd>Enter</kbd>              |
-| Code Block              | <kbd>⌘</kbd> + <kbd>Opt</kbd> + <kbd>6</kbd>                    | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>6</kbd> |
-| Line Break              | <kbd>Shift</kbd> + <kbd>Enter</kbd>                             | <kbd>Shift</kbd> + <kbd>Enter</kbd>             |
-| **Lists & Indentation** |                                                                 |                                                 |
-| Outdent List            | <kbd>⌘</kbd> + <kbd>[</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd> | <kbd>Shift</kbd> + <kbd>Tab</kbd>               |
-| Indent List             | <kbd>⌘</kbd> + <kbd>]</kbd> / <kbd>Tab</kbd>                    | <kbd>Tab</kbd>                                  |
+## 🎨 Themes
 
-## Editor Editing Shortcuts
+Textrix themes are provided as CSS files. You can:
 
-| Feature      | Syntax                                    |
-| ------------ | ----------------------------------------- |
-| Ordered List | Start with `1. ` (or any number + dot)    |
-| Bullet List  | Start with `* ` (asterisk + space)        |
-| Code Block   | Use triple backticks ` ``` `              |
-| Inline Code  | Wrap text with backticks (e.g., \`code\`) |
-| Emoji Picker | Type `:` then search for an emoji         |
+- Import them into your main CSS file
+- Import via JavaScript (if using a bundler like Vite)
+- Or load them directly from a CDN
 
-## Markdown Shortcuts (Requires `markdownShortcuts` options to be enabled)
+Currently, only one theme is available: `textrix`.
 
-| Feature             | Syntax Example                               |
-| ------------------- | -------------------------------------------- |
-| Blockquote          | Type `>` for blockquote, `>>` for pull quote |
-| **Bold** Text       | Type `**bold**` or `__bold__`                |
-| _Italic_ Text       | Type `_italic_` or `*italic*`                |
-| Horizontal Line     | Type `---` for a divider                     |
-| # Big Title (H1)    | Type `# Title`                               |
-| ## Small Title (H2) | Type `## Subtitle`                           |
+### Load via bundler (e.g. Vite)
 
-**Tip:** These shortcuts also work when pasting formatted text!
+```js
+import 'textrix/themes/textrix.min.css';
+```
+
+### Load in CSS
+
+```css
+@import 'textrix/themes/textrix.min.css';
+```
+
+### Load in HTML (via CDN)
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textrix@0.1.1/dist/themes/textrix.min.css" />
+```

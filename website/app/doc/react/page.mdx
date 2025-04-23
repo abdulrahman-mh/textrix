@@ -1,0 +1,39 @@
+## React Usage
+
+This example show you how to use Textrix editor on react:
+
+```js
+import 'textrix/themes/textrix.min.css';
+import { useEffect, useRef } from 'react';
+import { Editor } from 'textrix';
+import { BubbleMenu, FloatingMenu } from 'textrix/features';
+
+const EditorComponent = () => {
+  const editorRef = useRef(null);
+  const [editor, setEditor] = useState(null); // Store editor instance
+
+  useEffect(() => {
+    if (editorRef.current) {
+      // Create an editor instance
+      const editor = new Editor({
+        element: editorRef.current,
+        features: [BubbleMenu, FloatingMenu],
+      });
+      setEditor(editor);
+    }
+
+    // Cleanup the editor
+    return () => {
+      editor?.destroy();
+      setEditor(null);
+    };
+  }, []);
+
+  return (
+    <div>
+      <h1>Textrix Editor in React</h1>
+      <div ref={editorRef} />
+    </div>
+  );
+};
+```

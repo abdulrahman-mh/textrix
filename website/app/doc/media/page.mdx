@@ -1,1 +1,100 @@
-## Rich Media
+# 📸 Media
+
+Bring your content to life with the **Media** feature. Easily insert images, embed rich media (like YouTube videos, Tweets, etc.), and customize their
+layout with drag-and-drop controls, captions, and responsive layouts. This makes your editor more visual, interactive, and dynamic.
+
+---
+
+## What You Can Do
+
+With the Media plugin, you can:
+
+- 🖼️ **Insert Images** via upload or drag-and-drop
+- 🔗 **Embed Rich Media** — YouTube, Vimeo, Tweets, and websites
+- 📝 **Add captions** directly below your media
+- 🎛️ **Customize Layouts** — Grid, Fill-width, Inset, Outset
+- 🧩 **Group media** together in a grid
+- 🎯 **Drag, resize**, and reposition elements
+
+## Usage
+
+To use the Media feature, import it from `textrix/features{:bash}` and pass it into your editor:
+
+```js
+import { Editor } from 'textrix';
+import { Media } from 'textrix/features';
+
+const editor = new Editor({
+  element: document.body,
+  features: [
+    Media.configure({
+      uploadImage: async ({ file }) => {
+        const imageUrl = await uploadToMyCDN(file);
+        return { url: imageUrl };
+      },
+      fetchMediaEmbedData: async ({ url }) => {
+        return {
+          mediaId: 'abc123',
+          iframeSrc: url,
+          title: 'Embedded Media',
+        };
+      },
+      getOptimizedImageUrl: ({ src, layout }) => {
+        const widths = {
+          grid: 500,
+          'inset-center': 800,
+          'outset-center': 1200,
+          'fill-width': 5000,
+        };
+        const width = layout ? widths[layout] : 1000;
+        const imageUrl = new URL(src);
+        imageUrl.searchParams.set('width', `${width}px`);
+        return imageUrl.toString();
+      },
+      maxImageSizeBytes: 10 * 1024 * 1024, // 10 MB
+      onMaxFileSizeError: (file) => {
+        alert(`${file.name} is too large!`);
+      },
+    }),
+  ],
+});
+```
+
+## Media Options
+
+When configuring the Media feature, you can pass in the following options:
+
+- **uploadImage**: A function that handles the image upload process. It takes a `file` parameter and should return a URL to the uploaded image.
+
+- **fetchMediaEmbedData**: A function that handles embedding rich media like videos or tweets. It receives a URL and should return an object
+  containing the media ID, iframe source, and other metadata.
+
+- **getOptimizedImageUrl**: A function to generate optimized URLs for images based on the layout. This allows you to set different image sizes for
+  different layouts (like a grid or full-width).
+
+- **maxImageSizeBytes**: The maximum allowed file size for uploaded images (default is 25MB).
+
+- **onMaxFileSizeError**: A function that gets triggered when the file exceeds the maximum allowed size.
+
+- **mediaFocusOffset**: Defines the vertical margin for triggering scrolling when media is focused (default is `0`).
+
+## Embedding via URL
+
+When you type/paste a media URL (like a YouTube link), Textrix can automatically fetch and embed that media if `fetchMediaEmbedData` is configured.
+
+## Drag-and-Drop Support
+
+Textrix lets you drag media elements around the document. This includes:
+
+- Reordering media
+- Grouping items into a grid
+- Inline figcaptions (via plugin)
+- Real-time feedback on drop zones
+
+## Figcaptions
+
+The plugin also includes support for figcaptions, so users can click below an image to add context or descriptions directly inside the editor.
+
+## Clean Output
+
+Media elements in Textrix are rendered as semantic HTML (`<figure>`, `<img>`, `<figcaption>`, etc.) — perfect for modern web and SEO

@@ -1,43 +1,48 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import clsx from "clsx";
-import { ReactNode, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
-import GettingStartedIcon from "../../public/getting-started.svg";
-import TutorialIcon from "../../public/tutorial.svg";
-import FeaturesIcon from "../../public/modules-color.svg";
-import MediaIcon from "../../public/image-plus.svg";
-import UnsplashIcon from "../../public/unsplash.filled.svg";
-import CodeBlockIcon from "../../public/code-arrow.svg";
-import BubbleMenuIcon from "../../public/bubble.svg";
-import FloatingMenuIcon from "../../public/plus-circle.svg";
+import GettingStartedIcon from '../../public/getting-started.svg';
+import TutorialIcon from '../../public/tutorial.svg';
+import FeaturesIcon from '../../public/grid.svg';
+import MediaIcon from '../../public/image-plus.svg';
+import CodeBlockIcon from '../../public/code-arrow.svg';
+import BubbleMenuIcon from '../../public/comment.svg';
+import FloatingMenuIcon from '../../public/floating.svg';
+import EmojiIcon from '../../public/smile.svg';
+import ReactIcon from '../../public/react.svg';
+import ShortcutsIcon from '../../public/keyboard.svg';
 
-const links = [
+export const links = [
   {
-    name: "Getting Started",
-    href: "/doc/getting-started",
+    name: 'Getting Started',
+    href: '/doc/getting-started',
     icon: GettingStartedIcon,
   },
-  { name: "Tutorial", href: "/doc/tutorial", icon: TutorialIcon },
+  { name: 'Tutorial', href: '/doc/tutorial', icon: TutorialIcon },
   {
-    name: "Textrix/features",
-    href: "/doc/features",
+    name: 'Textrix/features',
+    href: '/doc/features',
     icon: FeaturesIcon,
     subLinks: [
-      { name: "Media", href: "/doc/media", icon: MediaIcon },
-      { name: "Bubble Menu", href: "/doc/bubble-menu", icon: BubbleMenuIcon },
+      { name: 'Media', href: '/doc/media', icon: MediaIcon },
+      { name: 'Bubble Menu', href: '/doc/bubble-menu', icon: BubbleMenuIcon },
       {
-        name: "Floating Menu",
-        href: "/doc/floating-menu",
+        name: 'Floating Menu',
+        href: '/doc/floating-menu',
         icon: FloatingMenuIcon,
       },
-      { name: "Code Block", href: "/doc/code-block", icon: CodeBlockIcon },
-      { name: "Unsplash", href: "/doc/unsplash", icon: UnsplashIcon },
+      { name: 'Code Block', href: '/doc/code-block', icon: CodeBlockIcon },
+      { name: 'Emoji', href: '/doc/emoji', icon: EmojiIcon },
+      // { name: 'Unsplash', href: '/doc/unsplash', icon: UnsplashIcon },
     ],
   },
+  { name: 'React', href: '/doc/react', icon: ReactIcon },
+  { name: 'Shortcuts', href: '/doc/shortcuts', icon: ShortcutsIcon },
 ];
 
 function LinkItem({
@@ -59,14 +64,10 @@ function LinkItem({
   return (
     <Link
       href={href}
-      className={clsx(
-        "flex w-full items-center gap-2 text-sm font-normal hover:text-blue-400",
-        className,
-        {
-          "text-blue-600": href === pathname,
-          "text-gray-900": href !== pathname,
-        }
-      )}
+      className={clsx('flex w-full items-center gap-2 text-md font-normal hover:text-[var(--color-blue-500)]', className, {
+        'text-[var(--color-blue-500)]': href === pathname,
+        'text-[var(--color-text-dark)]': href !== pathname,
+      })}
     >
       <Icon width={width} height={width} />
       <p>{name}</p>
@@ -96,44 +97,26 @@ export default function SideNav() {
       }, 0);
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <>
       {/* Desktop */}
       <div className="hidden space-y-2 md:block flex-none sticky top-[126px] w-[190px] lg:w-[224px] h-[calc(100vh-126px)] overflow-auto overscroll-contain">
-        {links.map((link) => {
-          const hasSubLinks = link.subLinks && link.subLinks.length > 0;
-          return (
-            <div
-              key={link.href}
-              className={clsx({ "mt-3": !!link.subLinks })}
-            >
-              <LinkItem
-                href={link.href}
-                Icon={link.icon}
-                name={link.name}
-                pathname={pathname}
-              />
-              {link.subLinks && (
-                <div className="mt-2 ml-8 space-y-3">
-                  {link.subLinks.map((link) => (
-                    <LinkItem
-                      key={link.href}
-                      href={link.href}
-                      Icon={link.icon}
-                      name={link.name}
-                      pathname={pathname}
-                      width={24}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {links.map((link) => (
+          <div key={link.href} className={clsx({ 'mt-3': !!link.subLinks })}>
+            <LinkItem href={link.href} Icon={link.icon} name={link.name} pathname={pathname} />
+            {link.subLinks && (
+              <div className="mt-3 mb-8 ml-8 space-y-3">
+                {link.subLinks.map((link) => (
+                  <LinkItem key={link.href} href={link.href} Icon={link.icon} name={link.name} pathname={pathname} />
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
       <button
         ref={buttonRef}
@@ -147,10 +130,8 @@ export default function SideNav() {
       <div
         ref={menuRef}
         className={clsx(
-          "absolute top-0 right-4 mt-2 max-w-[320px] w-full transition-all duration-300 ease-out z-40 md:hidden",
-          isOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-8 pointer-events-none"
+          'absolute top-0 right-4 mt-2 max-w-[320px] w-full transition-all duration-300 ease-out z-40 md:hidden',
+          isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8 pointer-events-none'
         )}
       >
         <div className="px-4 py-8 rounded bg-[rgb(245,244,244)] shadow-md h-full pointer-events-auto">

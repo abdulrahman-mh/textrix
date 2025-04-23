@@ -1,1 +1,223 @@
-## Tutorial
+# 📝 Textrix Editor Tutorial
+
+This page teaches you how to set up the editor, configure it, pick your theme, saves document in database or with API, and publish your content.
+
+If you're using Textrix with **React**, see how to setup [textrix with react](/doc/react), then come back to continue.
+
+## Basic Usage
+
+Here's how to initialize Textrix editor:
+
+{/* prettier-ignore */}
+```js
+import 'textrix/themes/textrix.min.css'; // Load default themes
+import { Editor } from 'textrix';
+// import some features
+import { Media, Emoji, BubbleMenu, FloatingMenu } from 'textrix/features';
+
+const editor = new Editor({
+  element: document.querySelector('.myEditor'),
+
+  // Add some features to your editor
+  features: [
+    BubbleMenu,   // Add a toolbar that pops up above the text
+    FloatingMenu, // Make a toolbar appear automagically on empty lines
+    Media,        // Adds support for embedding media (images, videos, etc.)
+    Emoji,        // Add Emoji menu, type ':' to select your emoji
+  ],
+});
+```
+
+### ⚙️ Editor Options
+
+You can pass several configuration options when creating the editor. These include:
+
+- `element`: DOM element where the editor will be mounted.
+- `content`: Initial content (JSON or HTML).
+- `features`: Plugins or custom features to extend on the editor.
+- `formats`: Disable specific formatting options.
+- `editable`: Boolean to enable or disable editing.
+- `markdownShortcuts`: Enable Markdown-like syntax input ([view shortcuts](/doc/shortcuts)).
+- `messages`: Custom labels and UI strings (great for localization 🌍).
+- `icons`: Override default icons.
+
+## Controlling the Editor
+
+### Make the Editor Read-Only
+
+```js
+editor.setEditable(false);
+```
+
+### Update editor settings
+
+```js
+editor.setOptions({ editable: true });
+```
+
+## Saving and Loading Content
+
+Textrix stores content in a portable JSON format.
+
+### Get the Current Content
+
+```js
+const json = editor.getJSON();
+```
+
+You can store this JSON in your database or send it to an API.
+
+### Load Content on Initialization
+
+```js
+new Editor({
+  content: {
+    type: 'doc',
+    content: [
+      // …
+    ],
+  },
+});
+```
+
+### Set Content Later
+
+if you need to wait for something, you can do it later through the editor instance:
+
+```js
+editor.setContent({
+  type: 'doc',
+  content: [
+    // …
+  ],
+});
+```
+
+You can test and play with the editor on this [demo](https://textrix-demo.vercel.app)
+
+## Listen for Changes
+
+User when typing and change the document structure, the editor called `onUpdate{:js}` method, from there you can save this changes in database or via
+API,
+
+```js
+New Editor({
+  onUpdate: ({ editor }) => {
+    // Save the doc
+    const docJSON = editor.getJSON()
+    sendToBackend(docJSON)
+  }
+})
+```
+
+You can upload the entire doc when changes happens, it will not be with that big. Or you can track the last uploaded version of your doc, and take a
+JSON diff between it and new doc, and just upload this diff to your server.
+
+### Debounced or Throttled Saving:
+
+Since saving the document after every single input could lead to performance issues and unnecessary database writes, you might want to implement da
+debounced or throttled save mechanism.
+
+Example using a simple debounce:
+
+```js
+let saveTimeout;
+
+New Editor({
+  onUpdate: ({ editor }) => {
+    clearTimeout(saveTimeout)
+
+    saveTimeout = setTimeout(() => {
+
+      // Save the doc
+      const docJSON = editor.getJSON()
+      sendToBackend(docJSON)
+
+    }, 2000); // Save after 2 second of idle
+  }
+})
+```
+
+## Publishing Content
+
+From the JSON content you stored before, you can generate a published **static HTML** content from there, and then you can serve it as an articles or
+blogs, with enhance **SEO** to make your post shows quickly on search engines.
+
+You can generate this HTML from your **Editor** instance, or from the backend server to add a layer of security.
+
+Example generate published post from your content using the editor:
+
+```js
+const html = editor.getHTML();
+```
+
+### On the Backend
+
+You can generate the published content on the backend from JSON content using `generateHTML{:js}` function;
+
+```js
+import { generateHTML } from 'textrix';
+
+const doc = {
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello world!',
+        },
+      ],
+    },
+  ],
+};
+
+// You need the schema to generates HTML, will took more about schema letter.
+const schema = buildSchema();
+const html = generateHTML(doc, schema);
+
+console.log(html); // <p>Hello world!<p/>
+```
+
+Optional: Use `stripHeadlines: true{:js}` to remove the title, subtitle, and kicker if you display them separately.
+
+## Editor Metadata
+
+You can access metadata like the featured image, title, and other article info:
+
+```js
+const metadata = editor.getMetadata();
+```
+
+## Selection Updates
+
+React to text selection changes, for example, to show word or character count:
+
+```js
+new Editor({
+  onSelectionUpdate: ({ isEmpty, charCount, wordCount }) => {
+    console.log(`${wordCount} words, ${charCount} characters`);
+  },
+});
+```
+
+## Checking State
+
+```js
+editor.isEmpty; // Checks if editor is empty
+editor.isEditable; // Checks if editor is editable
+editor.isDestroyed; // Checks if editor is destroyed
+```
+
+## Cleanup
+
+When done, destroy the editor instance to clean up resources:
+
+```js
+editor.destroy();
+```
+
+## 🧪 Try it Live
+
+Test it now on the [Textrix demo](https://textrix-demo.vercel.app)
