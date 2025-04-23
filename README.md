@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="/docs/light.svg">
-  <img alt="textrix logo" src="/docs/dark.svg" width="50%" height="50%">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/abdulrahman-mh/textrix/main/website/public/textrix.svg?raw=true">
+  <img alt="textrix logo" src="https://raw.githubusercontent.com/abdulrahman-mh/textrix/main/website/public/textrix.dark.svg?raw=true" width="50%" height="50%">
 </picture>
 
 What if Medium’s editor was faster, smarter, customizable, and open source?, Now it is. 🚀
