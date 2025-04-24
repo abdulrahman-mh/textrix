@@ -20,6 +20,10 @@ jobs:
           VERSION=${GITHUB_REF##refs/tags/}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Checkout main branch to commit changes
+        run: |
+          git checkout main
+
       - name: Update jsDelivr CDN links in documentation
         run: |
           FILE=website/app/doc/getting-started/page.mdx
