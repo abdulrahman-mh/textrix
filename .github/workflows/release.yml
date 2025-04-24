@@ -17,7 +17,7 @@ jobs:
       - name: Extract version from tag
         id: version
         run: |
-          VERSION=${GITHUB_REF##refs/tags/}
+          VERSION=${GITHUB_REF##refs/tags/v}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Checkout main branch to commit changes
