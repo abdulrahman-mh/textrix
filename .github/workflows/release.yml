@@ -2,8 +2,6 @@ name: Release and Publish to NPM
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*.*.*"
 
@@ -18,11 +16,13 @@ jobs:
 
       - name: Extract version from tag
         id: version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=${GITHUB_REF##refs/tags/}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Update jsDelivr CDN links in documentation
         run: |
-          FILE=website/app/doc/getting-started/page.mdx # Getting Started page
+          FILE=website/app/doc/getting-started/page.mdx
           VERSION=${{ steps.version.outputs.VERSION }}
           echo "Updating Textrix CDN version in $FILE to $VERSION"
 
