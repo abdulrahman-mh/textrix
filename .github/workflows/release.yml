@@ -22,6 +22,7 @@ jobs:
 
       - name: Checkout main branch to commit changes
         run: |
+          git fetch
           git checkout main
 
       - name: Update jsDelivr CDN links in documentation
