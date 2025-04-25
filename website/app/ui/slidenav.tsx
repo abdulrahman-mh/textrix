@@ -64,9 +64,9 @@ function LinkItem({
   return (
     <Link
       href={href}
-      className={clsx('flex w-full items-center gap-2 text-md font-normal hover:text-[var(--color-blue-500)]', className, {
-        'text-[var(--color-blue-500)]': href === pathname,
-        'text-[var(--color-text-dark)]': href !== pathname,
+      className={clsx('flex w-full items-center gap-2 text-md font-normal hover:text-blue-500', className, {
+        'text-blue-500': href === pathname,
+        'text-text-dark': href !== pathname,
       })}
     >
       <Icon width={width} height={width} />

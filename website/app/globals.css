@@ -2,55 +2,14 @@
 @plugin "@tailwindcss/typography";
 @config "../tailwind.config.js";
 
-/* Find themes here: https://coolors.co/ffffff-1a1a1a-6b7280-0582ff-045ac3-e5e7eb-f5f5f5 */
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
-
-  --color-gray-100: #fcfbfb;
-  --color-gray-200: #f6f5f4;
-  --color-gray-300: #dfdcd9;
-  --color-gray-400: #a39e98;
-  --color-gray-500: #78736f;
-  --color-gray-600: #615d59;
-  --color-gray-700: #494744;
-  --color-gray-800: #31302e;
-  --color-gray-900: #191918;
-
-  --color-blue-500: #097fe8;
-
-  --color-text-dark: var(--color-gray-900);
-  --color-text-secondary: #6b7280;
-  --color-alpha-hover: var(--color-alpha-black-100);
-
-  --color-button-primary: #0582ff;
-  --color-button-primary-hover: #045ac3;
-  --color-button-primary-active: #045ac3;
-  --color-button-secondary-hover: #d6e1f5;
-  --color-button-secondary: #ebf5fe;
-  --color-button-secondary-text: #087fe7;
-  --color-button-tertiary-hover: #eaeaea;
-
-  --color-alpha-black-100: rgba(0, 0, 0, 0.05);
-  --color-alpha-black-200: rgba(0, 0, 0, 0.1);
-
-  --color-border: #e5e7eb;
-  --color-code-block: #f5f5f5;
-  --color-inline-code: #818b981f;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-
-  --color-text-dark: var(--color-gray-900);
-  --color-button-primary: var(--color-gray-900);
-  --color-button-primary-active: var(--color-gray-700);
-  --color-button-primary-hover: var(--color-gray-800);
-  --color-button-primary-text: var(--color-white);
-  --color-alpha-hover: var(--color-alpha-black-100);
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -67,22 +26,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    Segoe UI,
-    Roboto,
-    Helvetica Neue,
-    Arial,
-    Noto Sans,
-    sans-serif,
-    Apple Color Emoji,
-    Segoe UI Emoji,
-    Segoe UI Symbol,
-    Noto Color Emoji;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 .container {
@@ -130,6 +74,21 @@ code[data-theme] span {
   }
 } */
 
+.external-link::after {
+  content: '';
+  display: inline-block;
+  margin-top: -1px;
+  margin-left: 4px;
+  width: 11px;
+  height: 11px;
+  background: currentColor;
+  color: var(--vp-c-text-3);
+  flex-shrink: 0;
+  --icon: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' %3E%3Cpath d='M0 0h24v24H0V0z' fill='none' /%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z' /%3E%3C/svg%3E");
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
+}
+
 .mdx-content {
   kbd {
     display: inline-block;
@@ -153,7 +112,7 @@ code[data-theme] span {
 
   p > a,
   li > a {
-    @apply text-[var(--color-blue-500)] hover:underline;
+    @apply text-blue-500 hover:underline;
   }
 
   h1 > a,
@@ -175,7 +134,7 @@ code[data-theme] span {
   }
 
   :not(pre) > code {
-    @apply rounded px-1.5 py-1 bg-[var(--color-inline-code)];
+    @apply rounded px-1.5 py-1 bg-code-inline;
   }
 
   blockquote p:first-of-type::before {
@@ -201,11 +160,11 @@ code[data-theme] span {
   }
 
   pre {
-    @apply px-6 py-4 leading-loose text-base md:text-sm md:leading-[2.1] lg:text-[0.9375rem] border border-[var(--color-border)];
+    @apply px-6 py-4 leading-loose text-base md:text-sm md:leading-[2.1] bg-code-block lg:text-[0.9375rem] border border-border-default;
   }
 
   pre > code {
-    @apply grid shadow-none text-inherit bg-[var(--color-code-block)];
+    @apply grid shadow-none text-inherit bg-code-block;
   }
 
   [data-line] {

@@ -45,14 +45,14 @@ export default function Navigation() {
         <Link
           href={prev.href}
           aria-label={`Previous: ${prev.title}`}
-          className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-dark)] pl-7 pr-2 py-1"
+          className="text-text-secondary hover:text-text-dark pl-7 pr-2 py-1"
         >
           <span className="text-[.8125rem] font-normal mb-0.5">Previous</span>
           <div className="flex items-center relative">
             <span className="absolute mt-0.5 left-[-26px] max-w-5">
               <ArrowLeft className="w-5 h-5" />
             </span>
-            <span className="text-[var(--color-text-dark)] text-[1rem] font-medium">{prev.title}</span>
+            <span className="text-text-dark text-[1rem] font-medium">{prev.title}</span>
           </div>
         </Link>
       )}
@@ -61,11 +61,11 @@ export default function Navigation() {
         <Link
           href={next.href}
           aria-label={`Next: ${next.title}`}
-          className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-dark)] ml-auto pl-2 pr-7 py-1"
+          className="text-text-secondary hover:text-text-dark ml-auto pl-2 pr-7 py-1"
         >
           <span className="text-[.8125rem] font-normal mb-0.5">Next</span>
           <div className="flex items-center relative">
-            <span className="text-[var(--color-text-dark)] text-[1rem] font-medium">{next.title}</span>
+            <span className="text-text-dark text-[1rem] font-medium">{next.title}</span>
             <span className="absolute mt-0.5 right-[-26px] max-w-5">
               <ArrowRight className="w-5 h-5" />
             </span>
