@@ -9,7 +9,7 @@ What if Medium’s editor was faster, smarter, customizable, and open source?, N
 
 <h3>
 
-[Homepage](https://textrix.vercel.app/doc) | [Documentation](https://textrix.vercel.app/doc) | [Demo](https://textrix-demo.vercel.app/)
+[Homepage](https://textrix.vercel.app) | [Documentation](https://textrix.vercel.app/doc) | [Demo](https://textrix-demo.vercel.app/)
 
 </h3>
 
