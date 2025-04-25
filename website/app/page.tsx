@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 const whyTextrixCards = [
@@ -55,7 +56,7 @@ export default function Home() {
         </div>
 
         <div className="flex-1 relative">
-          <img src="/preview-full.png" alt="Textrix Preview" className="w-full h-auto mt-[50px] lg:mt-[-50px]" />
+          <Image src="/preview-full.png" alt="Textrix Preview" width={882} height={564.2} className="w-full h-auto mt-[50px] lg:mt-[-50px]" />
           <div className="preview-gradient"></div>
         </div>
       </div>
