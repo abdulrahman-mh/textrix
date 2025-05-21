@@ -71,7 +71,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-x-8 lg:gap-y-0 sm:[&>*]:w-[284px] sm:[&>*]:h-[258px] [&>*]:w-full">
           {whyTextrixCards.map(({ icon, title, text, className = '' }, idx) => (
-            <div key={idx} className={`p-6 sm:p-8 rounded-2xl bg-gray-200 ${className}`}>
+            <div key={idx} className={`p-6 sm:p-8 sm:pr-5 rounded-2xl bg-gray-200 ${className}`}>
               <div className="flex items-center justify-center w-12 h-12 text-2xl bg-button-secondary-hover rounded-md pointer-events-none">
                 {icon}
               </div>
