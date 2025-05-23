@@ -153,7 +153,7 @@
   display: none;
   background-color: green;
   position: absolute;
-  z-index: 700;
+  z-index: 50;
 }
 .drop-cursor.active {
   display: inline-block;
@@ -199,7 +199,7 @@ figcaption {
   position: absolute;
   visibility: hidden;
   display: none;
-  z-index: 500;
+  z-index: 40;
   -webkit-transition: none;
   transition: none;
   top: 0;
@@ -360,7 +360,7 @@ figcaption {
   margin-top: 4px;
   width: 40px;
   height: 40px;
-  z-index: 400;
+  z-index: 30;
   transition: visibility 0s linear 250ms, opacity 0.1s, width 0s linear 250ms;
   visibility: hidden;
   opacity: 0;
@@ -723,7 +723,7 @@ iframe:hover {
 .textrix-zoom-overlay {
   position: fixed;
   background-color: rgba(255, 255, 255, 0.95);
-  z-index: 150;
+  z-index: 20;
   scroll-behavior: smooth;
   top: 0;
   right: 0;

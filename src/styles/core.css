@@ -165,7 +165,7 @@ span.heading-label::before {
   color: rgba(0, 0, 0, 0.54);
   font-weight: 400;
   font-style: normal;
-  z-index: 50;
+  z-index: 10;
 }
 .kicker .heading-label::before {
   top: 4px;
@@ -198,7 +198,7 @@ span.heading-label::before {
 .popover {
   position: absolute;
   width: max-content;
-  z-index: 900;
+  z-index: 60;
   padding: 15px;
   overflow: hidden;
 }
@@ -306,7 +306,7 @@ figure {
   box-sizing: border-box;
   user-select: auto;
   display: block;
-  z-index: 500;
+  z-index: 40;
 }
 
 .images-grid {
@@ -383,7 +383,7 @@ figure {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 400;
+  z-index: 30;
   content: "";
 }
 
