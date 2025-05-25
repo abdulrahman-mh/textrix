@@ -3,7 +3,6 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import type { Node as ProseMirrorNode } from 'prosemirror-model';
 import type { Editor } from '../../Editor';
 
-
 export function placeholdersPlugin(editor: Editor) {
   const {
     messages: { titleLabel: title, mainPlaceholder: tellYourStory, imgCaption, embedCaption },

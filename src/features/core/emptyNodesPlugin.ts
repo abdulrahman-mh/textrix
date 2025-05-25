@@ -1,10 +1,10 @@
-import { Plugin, PluginKey } from "prosemirror-state";
-import { Decoration, DecorationSet } from "prosemirror-view";
-import type { Node as ProseMirrorNode } from "prosemirror-model";
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
+import type { Node as ProseMirrorNode } from 'prosemirror-model';
 
 export function emptyNodesPlugin() {
   return new Plugin<DecorationSet>({
-    key: new PluginKey("emptyFigcaptionPlugin"),
+    key: new PluginKey('emptyFigcaptionPlugin'),
 
     props: {
       decorations(state) {
@@ -31,11 +31,11 @@ function findEmptyNodes(doc: ProseMirrorNode): Decoration[] {
 
   doc.descendants((node, pos) => {
     // Just handle empty figcaption right now
-    if (node.type.name === "figcaption" && node.content.size === 0) {
+    if (node.type.name === 'figcaption' && node.content.size === 0) {
       decorations.push(
         Decoration.node(pos, pos + node.nodeSize, {
-          class: "isEmpty",
-        })
+          class: 'isEmpty',
+        }),
       );
     }
   });

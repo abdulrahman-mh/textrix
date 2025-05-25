@@ -1,27 +1,18 @@
-import {
-  type EditorState,
-  NodeSelection,
-  TextSelection,
-  type Transaction,
-} from "prosemirror-state";
-import { findParentNode } from "../../helpers/findNodes";
-import type { Node as ProseMirrorNode } from "prosemirror-model";
-import type { Editor } from "../../Editor";
+import { type EditorState, NodeSelection, TextSelection, type Transaction } from 'prosemirror-state';
+import { findParentNode } from '../../helpers/findNodes';
+import type { Node as ProseMirrorNode } from 'prosemirror-model';
+import type { Editor } from '../../Editor';
 
-export type MediaLayout =
-  | "inset-center"
-  | "outset-center"
-  | "fill-width"
-  | "grid";
+export type MediaLayout = 'inset-center' | 'outset-center' | 'fill-width' | 'grid';
 
 /**
  * Mapping of layout types to their corresponding width values.
  * If the value is `null`, so the media are not controlled with a custom width.
  */
 const layoutMapping: Record<string, number | null> = {
-  "inset-center": 700,
-  "outset-center": 1192,
-  "fill-width": null,
+  'inset-center': 700,
+  'outset-center': 1192,
+  'fill-width': null,
   grid: null,
 };
 
@@ -32,12 +23,8 @@ const layoutMapping: Record<string, number | null> = {
  * @param {number} [mediaWidth] - The original width of the media.
  * @returns {number | null} - The calculated layout width, or `null` if it should take full width.
  */
-export function getLayoutWidth(
-  layout?: string,
-  mediaWidth?: number
-): number | null {
-  const selectedLayout =
-    layout && layoutMapping[layout] !== undefined ? layout : "inset-center";
+export function getLayoutWidth(layout?: string, mediaWidth?: number): number | null {
+  const selectedLayout = layout && layoutMapping[layout] !== undefined ? layout : 'inset-center';
 
   const layoutWidth = layoutMapping[selectedLayout];
 
@@ -46,9 +33,7 @@ export function getLayoutWidth(
     return null;
   }
 
-  return mediaWidth !== undefined
-    ? Math.min(layoutWidth, mediaWidth)
-    : layoutWidth;
+  return mediaWidth !== undefined ? Math.min(layoutWidth, mediaWidth) : layoutWidth;
 }
 
 /**
@@ -80,31 +65,24 @@ export function getAspectRatioLayout({
 
   return {
     layoutWidth,
-    layoutHeight:
-      layoutWidth && mediaWidth && mediaHeight
-        ? (layoutWidth / mediaWidth) * mediaHeight
-        : undefined,
-    aspectRatioFill:
-      mediaWidth && mediaHeight ? (mediaHeight / mediaWidth) * 100 : undefined,
+    layoutHeight: layoutWidth && mediaWidth && mediaHeight ? (layoutWidth / mediaWidth) * mediaHeight : undefined,
+    aspectRatioFill: mediaWidth && mediaHeight ? (mediaHeight / mediaWidth) * 100 : undefined,
   };
 }
 
 /**
  * Insert new line if the selection on media
  */
-export function newLineInMedia(
-  state: EditorState,
-  dispatch?: (tr: Transaction) => void
-) {
+export function newLineInMedia(state: EditorState, dispatch?: (tr: Transaction) => void) {
   const { selection, tr } = state;
   const { $anchor } = selection;
 
   const node = $anchor.node();
 
-  const isInFigcaption = node.type.name === "figcaption";
+  const isInFigcaption = node.type.name === 'figcaption';
   const parent =
-    findParentNode((node) => node.type.name === "imagesGrid")(selection) ||
-    findParentNode((node) => node.type.name === "figure")(selection);
+    findParentNode((node) => node.type.name === 'imagesGrid')(selection) ||
+    findParentNode((node) => node.type.name === 'figure')(selection);
   const paragraphNode = state.schema.nodes.paragraph.createAndFill();
 
   if (!paragraphNode) return false;
@@ -134,19 +112,11 @@ export function resetFigureNode(figure: ProseMirrorNode) {
   const image = figure.firstChild!;
 
   const updatedImage =
-    image.attrs.layout === "grid"
-      ? image.type.create(
-          { ...image.attrs, layout: "inset-center" },
-          image.content,
-          image.marks
-        )
+    image.attrs.layout === 'grid'
+      ? image.type.create({ ...image.attrs, layout: 'inset-center' }, image.content, image.marks)
       : image;
 
-  const updatedFigure = figure.type.create(
-    { ...figure.attrs, width: null },
-    updatedImage,
-    figure.marks
-  );
+  const updatedFigure = figure.type.create({ ...figure.attrs, width: null }, updatedImage, figure.marks);
 
   return updatedFigure;
 }
@@ -159,11 +129,11 @@ export function resetFigureNode(figure: ProseMirrorNode) {
  */
 export function calculateTotalAspectRatio<T>(
   items: Iterable<T> | { forEach(callback: (item: T) => void): void },
-  getDimensions: (item: T) => { width: number; height: number }
+  getDimensions: (item: T) => { width: number; height: number },
 ): number {
   let totalAspectRatio = 0;
 
-  if ("forEach" in items) {
+  if ('forEach' in items) {
     // biome-ignore lint/complexity/noForEach: <explanation>
     items.forEach((item) => {
       const { width, height } = getDimensions(item);
@@ -191,7 +161,7 @@ export function getDistributedWidth(
   width: number,
   height: number,
   totalAspectRatio: number,
-  itemsInRow: number
+  itemsInRow: number,
 ): number {
   const containerWidth = 1032;
   const gap = 10;
@@ -208,17 +178,11 @@ export function getDistributedWidth(
 /**
  * Checks if the selected media node has the specified media layout.
  */
-export function isMediaLayoutActive(
-  state: EditorState,
-  layout: MediaLayout
-): boolean {
+export function isMediaLayoutActive(state: EditorState, layout: MediaLayout): boolean {
   const { selection } = state;
   if (selection instanceof NodeSelection) {
     const { node } = selection;
-    return (
-      ["image", "iframe"].includes(node.type.name) &&
-      node.attrs.layout === layout
-    );
+    return ['image', 'iframe'].includes(node.type.name) && node.attrs.layout === layout;
   }
   return false;
 }
@@ -234,24 +198,20 @@ export const applyMediaLayout =
     if (selection instanceof NodeSelection) {
       const node = selection.node;
       let newSrc = node.attrs.src;
-      let zoomSrc: string | undefined
+      let zoomSrc: string | undefined;
 
-      if (
-        node.attrs.src &&
-        !node.attrs.src.startsWith("blob:") &&
-        editor.storage.media.getOptimizedImageUrl
-      ) {
+      if (node.attrs.src && !node.attrs.src.startsWith('blob:') && editor.storage.media.getOptimizedImageUrl) {
         newSrc = editor.storage.media.getOptimizedImageUrl({
           layout,
           src: node.attrs.src,
         });
         zoomSrc = editor.storage.media.getOptimizedImageUrl({
-          layout: "fill-width",
+          layout: 'fill-width',
           src: node.attrs.src,
         });
       }
 
-      if (["image", "iframe"].includes(node.type.name)) {
+      if (['image', 'iframe'].includes(node.type.name)) {
         const tr = state.tr.setNodeMarkup(selection.from, undefined, {
           ...node.attrs,
           src: newSrc,
@@ -271,27 +231,24 @@ export const applyMediaLayout =
 /**
  * Determines whether the given media layout can be applied to the currently selected image.
  */
-export function canApplyMediaLayout(
-  state: EditorState,
-  layout: MediaLayout
-): boolean {
+export function canApplyMediaLayout(state: EditorState, layout: MediaLayout): boolean {
   const { selection } = state;
 
   if (!(selection instanceof NodeSelection)) return false;
 
   const node = selection.node;
 
-  if (!["image", "iframe"].includes(node.type.name)) return false;
+  if (!['image', 'iframe'].includes(node.type.name)) return false;
 
-  if (node.type.name === "iframe") return true;
+  if (node.type.name === 'iframe') return true;
 
   const { width } = node.attrs;
 
-  if (layout === "inset-center") {
+  if (layout === 'inset-center') {
     return true;
   }
 
-  if (["outset-center", "fill-width"].includes(layout)) {
+  if (['outset-center', 'fill-width'].includes(layout)) {
     return width >= 1192;
   }
 
@@ -302,14 +259,12 @@ export function isImageHaveAlt(state: EditorState) {
   const { selection } = state;
   if (selection instanceof NodeSelection) {
     const node = selection.node;
-    return node.type.name === "image" && !!node.attrs.alt;
+    return node.type.name === 'image' && !!node.attrs.alt;
   }
   return false;
 }
 
 export function isImageSelection(state: EditorState) {
   const { selection } = state;
-  return (
-    selection instanceof NodeSelection && selection.node.type.name === "image"
-  );
+  return selection instanceof NodeSelection && selection.node.type.name === 'image';
 }

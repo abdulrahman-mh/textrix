@@ -214,23 +214,23 @@ export class BubbleMenus {
 
   private updateTooltipItemsStatus(tooltip: HTMLElement) {
     const { state } = this.view;
-  
+
     const result = tooltip.querySelectorAll('.buttonSet > button') as NodeListOf<HTMLButtonElement>;
-  
+
     for (const button of result) {
       const action = button.dataset.action as string;
-  
+
       const item = this.menuItems[action];
-  
+
       const isVisible = item.isVisible?.(state) ?? true;
       button.style.display = isVisible ? '' : 'none';
-  
+
       // Check for a divider right after this button
-      const nextSibling = button.nextElementSibling as any
+      const nextSibling = button.nextElementSibling as any;
       if (nextSibling?.classList.contains('buttonSet-separator')) {
         nextSibling.style.display = isVisible ? '' : 'none';
       }
-  
+
       if (isVisible) {
         const enabled = item.canActivate?.(state) ?? true;
         button.toggleAttribute('disabled', !enabled);
@@ -238,7 +238,6 @@ export class BubbleMenus {
       }
     }
   }
-  
 
   private calculateTooltipPosition(tooltip: HTMLElement, rect: DOMRect) {
     const TOOLTIP_WIDTH = tooltip.offsetWidth;

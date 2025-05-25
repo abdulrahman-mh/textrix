@@ -2,16 +2,13 @@ export const zoomImageHandler = (() => {
   let zoomedImage: HTMLImageElement | null = null;
   let overlay: HTMLDivElement | null = null;
   let originalSrc: string | null = null;
-  let originalTransform = "";
+  let originalTransform = '';
   let isCustomArticleContainer = false;
 
   const zIndexResetTimeouts = new WeakMap<HTMLImageElement, number>();
   const zIndexTrackedImages = new Set<HTMLImageElement>();
 
-  const handleZoomClick = (
-    event: MouseEvent,
-    parentElement: HTMLElement
-  ): void => {
+  const handleZoomClick = (event: MouseEvent, parentElement: HTMLElement): void => {
     const imgElement = event.currentTarget as HTMLImageElement;
 
     if (overlay || imgElement === zoomedImage) {
@@ -25,25 +22,21 @@ export const zoomImageHandler = (() => {
 
     createOverlay(parentElement);
     zoomedImage = imgElement;
-    zoomedImage.classList.add("zoomed");
+    zoomedImage.classList.add('zoomed');
 
     for (const image of zIndexTrackedImages) {
       const timeoutId = zIndexResetTimeouts.get(image);
       if (timeoutId) {
         clearTimeout(timeoutId);
-        image.style.zIndex = "auto";
+        image.style.zIndex = 'auto';
         zIndexResetTimeouts.delete(image);
       }
     }
     zIndexTrackedImages.clear();
 
-    imgElement.style.zIndex = "9999";
+    imgElement.style.zIndex = '9999';
 
-    applyZoomTransform(
-      imgElement,
-      imgElement.naturalWidth,
-      imgElement.naturalHeight
-    );
+    applyZoomTransform(imgElement, imgElement.naturalWidth, imgElement.naturalHeight);
 
     if (zoomSrc) {
       const preloadedImage = new Image();
@@ -56,7 +49,7 @@ export const zoomImageHandler = (() => {
 
   const resetZIndex = (image: HTMLImageElement): void => {
     const timeoutId = window.setTimeout(() => {
-      image.style.zIndex = "auto";
+      image.style.zIndex = 'auto';
       zIndexResetTimeouts.delete(image);
       zIndexTrackedImages.delete(image);
     }, 300);
@@ -72,7 +65,7 @@ export const zoomImageHandler = (() => {
       }
 
       zoomedImage.style.transform = originalTransform;
-      zoomedImage.classList.remove("zoomed");
+      zoomedImage.classList.remove('zoomed');
 
       resetZIndex(zoomedImage);
 
@@ -86,11 +79,7 @@ export const zoomImageHandler = (() => {
     }
   };
 
-  const applyZoomTransform = (
-    img: HTMLImageElement,
-    naturalWidth: number,
-    naturalHeight: number
-  ): void => {
+  const applyZoomTransform = (img: HTMLImageElement, naturalWidth: number, naturalHeight: number): void => {
     const rect = img.getBoundingClientRect();
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
@@ -116,14 +105,14 @@ export const zoomImageHandler = (() => {
   };
 
   const createOverlay = (parentElement: HTMLElement = document.body): void => {
-    overlay = document.createElement("div");
-    overlay.className = "textrix-zoom-overlay";
+    overlay = document.createElement('div');
+    overlay.className = 'textrix-zoom-overlay';
 
     if (isCustomArticleContainer) {
       overlay.style.height = `${parentElement.scrollHeight}px`;
     }
 
-    overlay.addEventListener("click", closeZoom);
+    overlay.addEventListener('click', closeZoom);
     parentElement.appendChild(overlay);
   };
 
@@ -134,7 +123,7 @@ export const zoomImageHandler = (() => {
   };
 
   const handleKeyUp = (event: KeyboardEvent): void => {
-    if (event.key === "Escape" || event.key === "Esc" || event.keyCode === 27) {
+    if (event.key === 'Escape' || event.key === 'Esc' || event.keyCode === 27) {
       closeZoom();
     }
   };
@@ -145,7 +134,7 @@ export const zoomImageHandler = (() => {
     if (initialized) return;
     initialized = true;
 
-    console.log("RUN");
+    console.log('RUN');
     if (container) {
       isCustomArticleContainer = true;
     }
@@ -154,39 +143,33 @@ export const zoomImageHandler = (() => {
 
     // biome-ignore lint/complexity/noForEach: <explanation>
     document
-      .querySelectorAll<HTMLImageElement>(
-        ".textrix:not(.editing) img:not([data-layout='fill-width'])"
-      )
+      .querySelectorAll<HTMLImageElement>(".textrix:not(.editing) img:not([data-layout='fill-width'])")
       .forEach((img) => {
-        img.addEventListener("click", (e) =>
-          handleZoomClick(e, container ?? document.body)
-        );
+        img.addEventListener('click', (e) => handleZoomClick(e, container ?? document.body));
       });
 
-    document.addEventListener("keyup", handleKeyUp);
+    document.addEventListener('keyup', handleKeyUp);
 
-    if ("addEventListener" in parent) {
-      parent.addEventListener("scroll", handleScroll);
+    if ('addEventListener' in parent) {
+      parent.addEventListener('scroll', handleScroll);
     }
 
-    window.addEventListener("resize", closeZoom);
+    window.addEventListener('resize', closeZoom);
   }
 
   function cleanup() {
     if (!initialized) return;
     initialized = false;
-    console.log("Cleanup");
+    console.log('Cleanup');
 
     // biome-ignore lint/complexity/noForEach: <explanation>
-    document
-      .querySelectorAll<HTMLImageElement>("img:not([data-layout='fill-width'])")
-      .forEach((img) => {
-        img.removeEventListener("click", handleZoomClick as EventListener);
-      });
+    document.querySelectorAll<HTMLImageElement>("img:not([data-layout='fill-width'])").forEach((img) => {
+      img.removeEventListener('click', handleZoomClick as EventListener);
+    });
 
-    document.removeEventListener("keyup", handleKeyUp);
-    document.removeEventListener("scroll", handleScroll);
-    window.removeEventListener("resize", closeZoom);
+    document.removeEventListener('keyup', handleKeyUp);
+    document.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', closeZoom);
 
     closeZoom();
   }

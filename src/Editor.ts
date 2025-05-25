@@ -210,8 +210,8 @@ export class Editor {
       published: true,
     });
 
-    let content = this.view.state.doc.content
-    let cleanup: any
+    let content = this.view.state.doc.content;
+    let cleanup: any;
 
     const headlinePositions = HeadingPluginKey.getState(this.view.state)?.indexes;
     if (options?.stripHeadlines && headlinePositions) {
@@ -222,7 +222,7 @@ export class Editor {
     }
 
     const htmlContent = getHTMLFromFragment(content, schema);
-    cleanup?.()
+    cleanup?.();
     return `<div class="textrix">${htmlContent}</div>`;
   }
 

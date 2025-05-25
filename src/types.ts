@@ -6,12 +6,12 @@ import type {
   NodeSpec,
   DOMOutputSpec,
   MarkSpec,
-} from "prosemirror-model";
-import type { EditorView } from "prosemirror-view";
-import type { Messages } from "./util/messages";
-import type { Editor } from "./Editor";
-import type { Icons } from "./util/icons";
-import type { Feature } from "./Feature";
+} from 'prosemirror-model';
+import type { EditorView } from 'prosemirror-view';
+import type { Messages } from './util/messages';
+import type { Editor } from './Editor';
+import type { Icons } from './util/icons';
+import type { Feature } from './Feature';
 
 // biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export interface Commands {}
@@ -252,7 +252,7 @@ export type JSONContent = {
 
 export type Content = HTMLContent | JSONContent | JSONContent[] | null;
 
-export type FocusPosition = "start" | "end" | "all" | number | boolean | null;
+export type FocusPosition = 'start' | 'end' | 'all' | number | boolean | null;
 
 export type TextSerializer = (props: {
   node: ProseMirrorNode;
@@ -276,7 +276,7 @@ export type Image = {
 export interface Attribute {
   default: any;
   rendered?: boolean;
-  renderedOnMode?: "published" | "edit";
+  renderedOnMode?: 'published' | 'edit';
   toDOM?: (attributes: Record<string, any>) => Record<string, any>;
   parseDOM?: (element: HTMLElement) => any;
 }
@@ -289,7 +289,7 @@ export interface GlobalAttribute {
 }
 
 export type AddGlobalAttributes = Array<{
-  mode?: "published" | "edit";
+  mode?: 'published' | 'edit';
   types: string[];
   attributes: Record<string, Attribute>;
 }>;

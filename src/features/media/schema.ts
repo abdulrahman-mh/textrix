@@ -1,5 +1,5 @@
-import type { NodeExtendedSpec, SchemaOptions } from "../../types";
-import { getAspectRatioLayout, getLayoutWidth } from "./helpers";
+import type { NodeExtendedSpec, SchemaOptions } from '../../types';
+import { getAspectRatioLayout, getLayoutWidth } from './helpers';
 
 export function extendNodeSchema({
   name,
@@ -10,17 +10,17 @@ export function extendNodeSchema({
 }): Record<string, NodeExtendedSpec> {
   return {
     figure: {
-      group: "block",
-      content: "(image | iframe) figcaption?",
+      group: 'block',
+      content: '(image | iframe) figcaption?',
       attrs: { width: { default: null } },
       draggable: true,
       isolating: true,
 
       parseDOM: [
         {
-          tag: "figure",
+          tag: 'figure',
           getAttrs: (dom: HTMLElement) => {
-            const imageOrIframe = dom.querySelector("img, iframe");
+            const imageOrIframe = dom.querySelector('img, iframe');
 
             if (!imageOrIframe) {
               return false;
@@ -35,11 +35,9 @@ export function extendNodeSchema({
         const { width, ...otherAttrs } = HTMLAttributes;
 
         return [
-          "figure",
+          'figure',
           {
-            style: HTMLAttributes.width
-              ? `width: ${HTMLAttributes.width}%`
-              : null,
+            style: HTMLAttributes.width ? `width: ${HTMLAttributes.width}%` : null,
             ...otherAttrs,
           },
           0,
@@ -48,25 +46,25 @@ export function extendNodeSchema({
     },
 
     figcaption: {
-      content: "inline*",
-      marks: "bold link",
-      parseDOM: [{ tag: "figcaption" }],
-      toDOM: () => ["figcaption", 0],
+      content: 'inline*',
+      marks: 'bold link',
+      parseDOM: [{ tag: 'figcaption' }],
+      toDOM: () => ['figcaption', 0],
     },
 
     imagesGrid: {
-      group: "block",
-      content: "figure*",
+      group: 'block',
+      content: 'figure*',
       defining: true,
       isolating: true,
 
       parseDOM: [
         {
-          tag: "div.images-grid",
+          tag: 'div.images-grid',
         },
       ],
       toDOM() {
-        return ["div", { class: "images-grid" }, 0];
+        return ['div', { class: 'images-grid' }, 0];
       },
     },
 
@@ -79,7 +77,7 @@ export function extendNodeSchema({
         imageId: { default: null },
         width: { default: null },
         height: { default: null },
-        layout: { default: "inset-center" },
+        layout: { default: 'inset-center' },
       },
 
       parseDOM: [
@@ -87,14 +85,14 @@ export function extendNodeSchema({
           // TODO: Add support for images blob data in src attribute
           tag: 'img[src]:not([src^="data:"])',
           getAttrs: (dom: HTMLElement) => {
-            const src = dom.getAttribute("src");
+            const src = dom.getAttribute('src');
 
             if (!src) return false;
 
             return {
               src,
-              alt: dom.getAttribute("alt"),
-              title: dom.getAttribute("title"),
+              alt: dom.getAttribute('alt'),
+              title: dom.getAttribute('title'),
               ...dom.dataset,
             };
           },
@@ -102,55 +100,47 @@ export function extendNodeSchema({
       ],
 
       toDOM({ HTMLAttributes }) {
-        const { imageId, width, height, layout, zoomSrc, ...otherAttrs } =
-          HTMLAttributes;
+        const { imageId, width, height, layout, zoomSrc, ...otherAttrs } = HTMLAttributes;
 
         if (schemaOptions.published) {
-          return [
-            "img",
-            { width, height, src: otherAttrs.src, "data-zoom-src": zoomSrc, 'data-layout': layout },
-          ];
+          return ['img', { width, height, src: otherAttrs.src, 'data-zoom-src': zoomSrc, 'data-layout': layout }];
         }
 
-        const { layoutWidth, layoutHeight, aspectRatioFill } =
-          getAspectRatioLayout({
-            layout: HTMLAttributes.layout,
-            mediaWidth: HTMLAttributes.width,
-            mediaHeight: HTMLAttributes.height,
-          });
+        const { layoutWidth, layoutHeight, aspectRatioFill } = getAspectRatioLayout({
+          layout: HTMLAttributes.layout,
+          mediaWidth: HTMLAttributes.width,
+          mediaHeight: HTMLAttributes.height,
+        });
 
         const imgAttributes = {
-          "data-width": width,
-          "data-height": height,
-          "data-image-id": imageId,
-          "data-layout": layout,
-          "data-zoom-src": zoomSrc,
+          'data-width': width,
+          'data-height': height,
+          'data-image-id': imageId,
+          'data-layout': layout,
+          'data-zoom-src': zoomSrc,
           ...otherAttrs,
         };
 
         // If aspectRatioFill not exists, render image without it
         if (!aspectRatioFill) {
-          return ["img", imgAttributes];
+          return ['img', imgAttributes];
         }
 
         return [
-          "div",
+          'div',
           {
-            "data-layout": layout,
-            class: "aspectRatioPlaceholder",
-            style:
-              layoutWidth && layoutHeight
-                ? `max-width: ${layoutWidth}px; max-height: ${layoutHeight}px;`
-                : null,
+            'data-layout': layout,
+            class: 'aspectRatioPlaceholder',
+            style: layoutWidth && layoutHeight ? `max-width: ${layoutWidth}px; max-height: ${layoutHeight}px;` : null,
           },
           [
-            "div",
+            'div',
             {
-              class: "aspectRatioPlaceholder-fill",
+              class: 'aspectRatioPlaceholder-fill',
               style: `padding-bottom: ${aspectRatioFill}%;`,
             },
           ],
-          ["img", imgAttributes],
+          ['img', imgAttributes],
         ];
       },
     },
@@ -162,7 +152,7 @@ export function extendNodeSchema({
         src: { default: null },
         frameborder: { default: 0 },
         allowfullscreen: { default: true },
-        layout: { default: "inset-center" },
+        layout: { default: 'inset-center' },
         mediaId: { default: null },
         width: { default: null },
         height: { default: null },
@@ -172,39 +162,27 @@ export function extendNodeSchema({
 
       parseDOM: [
         {
-          tag: "iframe",
+          tag: 'iframe',
           getAttrs: (dom: HTMLElement) => {
-            if (
-              !dom.getAttribute("src") ||
-              !dom.getAttribute("data-media-id")
-            ) {
+            if (!dom.getAttribute('src') || !dom.getAttribute('data-media-id')) {
               return false;
             }
 
             return {
-              mediaId: dom.getAttribute("data-media-id"),
-              src: dom.getAttribute("src"),
-              width: dom.getAttribute("data-width"),
-              height: dom.getAttribute("data-height"),
-              frameborder: dom.getAttribute("frameborder"),
-              allowfullscreen: dom.getAttribute("allowfullscreen"),
-              layout: dom.getAttribute("data-layout"),
+              mediaId: dom.getAttribute('data-media-id'),
+              src: dom.getAttribute('src'),
+              width: dom.getAttribute('data-width'),
+              height: dom.getAttribute('data-height'),
+              frameborder: dom.getAttribute('frameborder'),
+              allowfullscreen: dom.getAttribute('allowfullscreen'),
+              layout: dom.getAttribute('data-layout'),
             };
           },
         },
       ],
 
       toDOM({ HTMLAttributes }) {
-        const {
-          src,
-          width,
-          height,
-          mediaId,
-          layout,
-          naturalWidth,
-          naturalHeight,
-          ...otherAttrs
-        } = HTMLAttributes;
+        const { src, width, height, mediaId, layout, naturalWidth, naturalHeight, ...otherAttrs } = HTMLAttributes;
 
         const layoutWidth = getLayoutWidth(layout, width);
 
@@ -214,31 +192,31 @@ export function extendNodeSchema({
         const padding = (realHeight / realWidth) * 100;
 
         return [
-          "div",
+          'div',
           {
-            "data-layout": layout,
-            class: "aspectRatioPlaceholder",
+            'data-layout': layout,
+            class: 'aspectRatioPlaceholder',
             style: layoutWidth ? `max-width: ${layoutWidth}px;` : null,
           },
           [
-            "div",
+            'div',
             {
-              class: "aspectRatioPlaceholder-fill",
+              class: 'aspectRatioPlaceholder-fill',
               style: `padding-bottom: ${padding}%;`,
             },
           ],
           [
-            "div",
-            { class: "iframeContainer" },
+            'div',
+            { class: 'iframeContainer' },
 
             [
-              "iframe",
+              'iframe',
               {
                 src,
-                "data-width": width,
-                "data-height": height,
-                "data-media-id": mediaId,
-                "data-layout": layout,
+                'data-width': width,
+                'data-height': height,
+                'data-media-id': mediaId,
+                'data-layout': layout,
                 ...otherAttrs,
               },
             ],

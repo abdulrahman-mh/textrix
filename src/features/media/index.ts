@@ -1,7 +1,13 @@
 import type { Command } from 'prosemirror-state';
 import { Feature, type Menuitem } from '../../Feature';
 import dragHandlerPlugin from './dragHandlerPlugin';
-import { applyMediaLayout, canApplyMediaLayout, isMediaLayoutActive, newLineInMedia, type MediaLayout } from './helpers';
+import {
+  applyMediaLayout,
+  canApplyMediaLayout,
+  isMediaLayoutActive,
+  newLineInMedia,
+  type MediaLayout,
+} from './helpers';
 import { extendNodeSchema } from './schema';
 import { urlEmbedInputRule } from './urlEmbedInputRule';
 import type { EmbedMedia } from '../../types';
@@ -13,7 +19,7 @@ declare module '../../types' {
       message: string;
       className?: string;
     }) => Command;
-    newLineInMedia: Command
+    newLineInMedia: Command;
   }
 }
 
@@ -106,10 +112,7 @@ export interface MediaOptions {
   mediaFocusOffset?: number;
 }
 
-type MediaStorage = Pick<
-  MediaOptions,
-  'mediaFocusOffset' | 'uploadImage' | 'getOptimizedImageUrl'
->;
+type MediaStorage = Pick<MediaOptions, 'mediaFocusOffset' | 'uploadImage' | 'getOptimizedImageUrl'>;
 
 export const Media = Feature.create<MediaOptions, MediaStorage>({
   name: 'media',
@@ -145,7 +148,7 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
           }
           return true;
         },
-        newLineInMedia,
+      newLineInMedia,
     };
   },
 
@@ -154,7 +157,7 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
   },
 
   addPlugins() {
-    return [dragHandlerPlugin(),insertFigcaptionPlugin()];
+    return [dragHandlerPlugin(), insertFigcaptionPlugin()];
   },
 
   addFloatingMenuItems() {

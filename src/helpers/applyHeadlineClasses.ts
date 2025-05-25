@@ -15,10 +15,7 @@ export function applyHeadlineClasses(container: HTMLElement | VElement, headline
   });
 }
 
-export function applyHeadlineClassesToNode(
-  node: Node | Fragment,
-  headlinePositions: Record<string, number>
-) {
+export function applyHeadlineClassesToNode(node: Node | Fragment, headlinePositions: Record<string, number>) {
   const { title, subtitle, kicker } = headlinePositions;
 
   // Keep track of all nodes that were modified
