@@ -306,7 +306,7 @@ figure {
   box-sizing: border-box;
   user-select: auto;
   display: block;
-  z-index: 40;
+  z-index: auto;
 }
 
 .images-grid {

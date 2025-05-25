@@ -497,8 +497,8 @@ figcaption {
 }
 
 /* ------------- Media Theme ------------- */
-figure img:hover,
-iframe:hover {
+.textrix.editing figure img:hover,
+.textrix.editing iframe:hover {
   box-shadow: 0 0 0 3px #34e79a;
 }
 
@@ -706,12 +706,17 @@ iframe:hover {
 }
 
 /* -------------- Media zoom (Only in published mode) -------------- */
-.textrix:not(.editing) > figure > img {
+.textrix:not(.editing) img {
   max-width: 100%;
   max-height: 100%;
   position: relative;
+  display: block;
+  height: auto;
+  width: auto;
+  margin-inline: auto;
 }
-.textrix:not(.editing) > figure > img:not([data-layout="fill-width"]) {
+
+.textrix:not(.editing) img:not([data-layout="fill-width"]) {
   cursor: zoom-in;
   z-index: auto;
   transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1);
@@ -720,10 +725,28 @@ iframe:hover {
 .textrix:not(.editing) > figure > img.zoomed {
   cursor: zoom-out;
 }
+
+.textrix:not(.editing) figure > img[data-layout="inset-center"] {
+  max-width: min(700px, 100%);
+}
+
+.textrix:not(.editing) figure > img[data-layout="outset-center"] {
+  max-width: min(1192px, 100%);
+}
+
+.textrix:not(.editing) figure > img[data-layout="fill-width"] {
+  max-width: 100%;
+}
+
+.textrix:not(.editing) img.zoomed {
+  cursor: zoom-out;
+  z-index: 9999; /* above other */
+}
+
 .textrix-zoom-overlay {
-  position: fixed;
+  position: absolute;
   background-color: rgba(255, 255, 255, 0.95);
-  z-index: 20;
+  z-index: 9998;
   scroll-behavior: smooth;
   top: 0;
   right: 0;
