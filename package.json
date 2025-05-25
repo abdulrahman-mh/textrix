@@ -1,7 +1,7 @@
 {
   "name": "textrix",
   "description": "A powerful, customizable Medium-style publishing editor.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "keywords": [
     "textrix",
     "medium-editor",
