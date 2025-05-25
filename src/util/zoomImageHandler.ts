@@ -1,8 +1,8 @@
-export const ZoomImageHandler = (() => {
+export const zoomImageHandler = (() => {
   let zoomedImage: HTMLImageElement | null = null;
   let overlay: HTMLDivElement | null = null;
   let originalSrc: string | null = null;
-  let originalTransform: string = "";
+  let originalTransform = "";
   let isCustomArticleContainer = false;
 
   const zIndexResetTimeouts = new WeakMap<HTMLImageElement, number>();
@@ -27,14 +27,14 @@ export const ZoomImageHandler = (() => {
     zoomedImage = imgElement;
     zoomedImage.classList.add("zoomed");
 
-    zIndexTrackedImages.forEach((image) => {
+    for (const image of zIndexTrackedImages) {
       const timeoutId = zIndexResetTimeouts.get(image);
       if (timeoutId) {
         clearTimeout(timeoutId);
         image.style.zIndex = "auto";
         zIndexResetTimeouts.delete(image);
       }
-    });
+    }
     zIndexTrackedImages.clear();
 
     imgElement.style.zIndex = "9999";
@@ -152,6 +152,7 @@ export const ZoomImageHandler = (() => {
 
     const parent = container || document;
 
+    // biome-ignore lint/complexity/noForEach: <explanation>
     document
       .querySelectorAll<HTMLImageElement>(
         ".textrix:not(.editing) img:not([data-layout='fill-width'])"
@@ -176,6 +177,7 @@ export const ZoomImageHandler = (() => {
     initialized = false;
     console.log("Cleanup");
 
+    // biome-ignore lint/complexity/noForEach: <explanation>
     document
       .querySelectorAll<HTMLImageElement>("img:not([data-layout='fill-width'])")
       .forEach((img) => {

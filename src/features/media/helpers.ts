@@ -6,7 +6,7 @@ import {
 } from "prosemirror-state";
 import { findParentNode } from "../../helpers/findNodes";
 import type { Node as ProseMirrorNode } from "prosemirror-model";
-import { Editor } from "../../Editor";
+import type { Editor } from "../../Editor";
 
 export type MediaLayout =
   | "inset-center"
@@ -234,7 +234,7 @@ export const applyMediaLayout =
     if (selection instanceof NodeSelection) {
       const node = selection.node;
       let newSrc = node.attrs.src;
-      let zoomSrc;
+      let zoomSrc: string | undefined
 
       if (
         node.attrs.src &&

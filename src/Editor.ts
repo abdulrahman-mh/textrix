@@ -211,7 +211,7 @@ export class Editor {
     });
 
     let content = this.view.state.doc.content
-    let cleanup
+    let cleanup: any
 
     const headlinePositions = HeadingPluginKey.getState(this.view.state)?.indexes;
     if (options?.stripHeadlines && headlinePositions) {

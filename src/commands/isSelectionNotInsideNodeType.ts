@@ -1,5 +1,5 @@
-import { Command, EditorState } from "prosemirror-state";
-import { NodeType } from "prosemirror-model";
+import type { Command, EditorState } from "prosemirror-state";
+import type { NodeType } from "prosemirror-model";
 
 export function isSelectionNotInsideNodeType(nodeType: NodeType): Command {
   return (state: EditorState) => {

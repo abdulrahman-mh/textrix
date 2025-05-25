@@ -39,9 +39,8 @@ export function applyHeadlineClassesToNode(
 
   // Return cleanup function
   return function cleanup() {
-    modifiedNodes.forEach((child) => {
-      // @ts-ignore
+    for (const child of modifiedNodes) {
       child.attrs.class = undefined;
-    });
+    }
   };
 }
