@@ -28,7 +28,7 @@ import { applyHeadlineClassesToNode } from '../helpers/applyHeadlineClasses';
  * const schema = buildSchema()
  * const html = generateHTML(doc, schema)
  */
-export function generateHTML(doc: JSONContent, schema: Schema, options: GetHTMLOptions): string {
+export function generateHTML(doc: JSONContent, schema: Schema, options?: GetHTMLOptions): string {
   let contentNode = Node.fromJSON(schema, doc);
 
   let prevNode: { node: Node; index: number } | null = null;
@@ -63,7 +63,7 @@ export function generateHTML(doc: JSONContent, schema: Schema, options: GetHTMLO
     }
   });
 
-  if (options.stripHeadlines) {
+  if (options?.stripHeadlines) {
     const values = Object.values(headlinesPositions);
 
     if (values.length > 0) {
