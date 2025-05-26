@@ -7,16 +7,18 @@
 
 What if Medium’s editor was faster, smarter, customizable, and open source?, Now it is. 🚀
 
+[![GitHub Repo stars](https://img.shields.io/github/stars/abdulrahman-mh/textrix?style=social)](https://github.com/abdulrahman-mh/textrix/stargazers)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/textrix)](https://bundlephobia.com/result?p=textrix)
+![npm](https://img.shields.io/npm/dm/textrix)
+![License](https://img.shields.io/github/license/abdulrahman-mh/textrix)
+
+![Screenshot](https://raw.githubusercontent.com/abdulrahman-mh/textrix/main/images/screenshot.png?raw=true)
+
 <h3>
 
 [Homepage](https://textrix.vercel.app) | [Documentation](https://textrix.vercel.app/doc) | [Demo](https://textrix-demo.vercel.app/)
 
 </h3>
-
-[![GitHub Repo stars](https://img.shields.io/github/stars/abdulrahman-mh/textrix?style=social)](https://github.com/abdulrahman-mh/textrix/stargazers)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/textrix)](https://bundlephobia.com/result?p=textrix)
-![npm](https://img.shields.io/npm/dm/textrix)
-![License](https://img.shields.io/github/license/abdulrahman-mh/textrix)
 
 </div>
 
