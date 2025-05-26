@@ -9,6 +9,10 @@
 @import url(./core.css);
 @import url(./textrix.spacing.css);
 
+figure {
+  padding-block: 5px;
+}
+
 .textrix p {
   font-weight: 400;
   font-style: normal;

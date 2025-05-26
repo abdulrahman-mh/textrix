@@ -315,7 +315,13 @@ figure {
   box-sizing: border-box;
   position: relative;
   display: flex;
+  align-items: flex-start;
   gap: 10px;
+}
+
+.images-grid figure {
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 @media screen and (max-width: 1032px) {
@@ -393,6 +399,7 @@ figcaption {
   position: relative;
   -webkit-nbsp-mode: normal;
   display: none;
+  z-index: 500;
 }
 
 figcaption:not(.isEmpty),
@@ -402,7 +409,7 @@ figure.is-selected > figcaption,
 }
 
 .images-grid figcaption {
-  position: absolute;
+  /* position: absolute; */
 }
 
 [data-layout="inset-center"] + figcaption {
