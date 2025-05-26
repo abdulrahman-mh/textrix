@@ -26,6 +26,7 @@
 - Add `data-full-width` attribute to images, and use it when zoom on the image in publishing.
 - Menu icons in css pseudo-element, to make the theme can customize the icons also.
 - In media plugin, create an option on the editor to check if still there an images uploading
+- Filter trailing/leading empty nodes from publishing content, includes empty figcaption and other.
 
 - Use Content Security Policy (CSP) on Published.
 
