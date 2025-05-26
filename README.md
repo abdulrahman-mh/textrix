@@ -12,7 +12,9 @@ What if Medium’s editor was faster, smarter, customizable, and open source?, N
 ![npm](https://img.shields.io/npm/dm/textrix)
 ![License](https://img.shields.io/github/license/abdulrahman-mh/textrix)
 
-![Screenshot](https://raw.githubusercontent.com/abdulrahman-mh/textrix/main/images/screenshot.png?raw=true)
+<br />
+
+![Screenshot](https://raw.githubusercontent.com/abdulrahman-mh/textrix/main/images/screenshot.png)
 
 <h3>
 
