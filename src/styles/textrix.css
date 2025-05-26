@@ -720,6 +720,11 @@ figcaption {
   margin-inline: auto;
 }
 
+.textrix:not(.editing) .images-grid img {
+  width: 100%;
+  height: 100%;
+}
+
 .textrix:not(.editing) img:not([data-layout="fill-width"]) {
   cursor: zoom-in;
   z-index: auto;
