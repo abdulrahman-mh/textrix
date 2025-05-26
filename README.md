@@ -14,7 +14,8 @@ What if Medium’s editor was faster, smarter, customizable, and open source?, N
 
 <br />
 
-![Screenshot](https://raw.githubusercontent.com/abdulrahman-mh/textrix/main/images/screenshot.png)
+<img src="https://raw.githubusercontent.com/abdulrahman-mh/textrix/main/images/screenshot.png" alt="Screenshot" style="border: 2px solid #ccc; border-radius: 6px;">
+
 
 <h3>
 
