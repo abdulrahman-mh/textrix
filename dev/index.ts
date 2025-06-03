@@ -8,10 +8,9 @@ import { buildSchema, generateHTML } from '../src';
 // Initialize Editor
 const editor = new Editor({
   element: document.body,
-  content: JSON.parse('{"type":"doc","content":[{"type":"h3","attrs":{"name":"c7emkdb7n","dir":null}},{"type":"paragraph","attrs":{"name":"75ga24v2f","dir":null}},{"type":"figure","attrs":{"width":null},"content":[{"type":"image","attrs":{"name":"5zf9dx77c","src":"https://fakeimg.pl/711x591/?text=711 * 591","alt":null,"title":null,"imageId":null,"width":1064,"fullWidth":null,"height":540,"layout":"inset-center"}},{"type":"figcaption","content":[{"type":"text","text":"fsdfsdfsfsdfsdfsfsfsdfsdf"}]}]},{"type":"paragraph","attrs":{"name":"221hl0w9g","dir":"ltr"},"content":[{"type":"text","text":"fsdsdfsfs"}]}]}'),
   features: [
     BubbleMenu.configure({bold: false}),
-    Media.configure({ uploadImage, fetchMediaEmbedData }),
+    Media.configure({ fetchMediaEmbedData }),
     FloatingMenu,
     CodeBlock,
     Emoji,
