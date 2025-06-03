@@ -29,7 +29,6 @@ export const CodeBlock = Feature.create({
         name: 'codeBlock',
         priority: 500,
         title: this.editor.options.messages.codeBlock,
-        icon: this.editor.options.icons.addCodeBlockInline,
         execute: this.commands.setCodeBlock,
       },
     ];

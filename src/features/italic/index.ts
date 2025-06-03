@@ -68,7 +68,6 @@ const Italic = Feature.create({
         isActive: (state) => isMarkActive(state, this.schema.marks.italic),
         canActivate: (state) => canSetMark(state, this.schema.marks.italic),
         execute: this.commands.toggleItalic,
-        icon: this.editor.options.icons.italic,
         title: this.editor.options.messages.italic,
       },
     ];

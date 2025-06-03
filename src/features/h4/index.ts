@@ -40,7 +40,6 @@ const H4 = Feature.create({
         isActive: (state) => isNodeActive(state, this.schema.nodes.h4),
         execute: toggleNode(this.schema.nodes.h4, this.schema.nodes.paragraph),
         isVisible: isSelectionNotInsideNodeType(this.schema.nodes.figcaption),
-        icon: this.editor.options.icons.tSmaller,
         title: this.editor.options.messages.smallTitle,
       },
     ];

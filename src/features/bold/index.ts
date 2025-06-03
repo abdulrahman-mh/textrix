@@ -63,7 +63,6 @@ const Bold = Feature.create({
         isActive: (state) => isMarkActive(state, this.schema.marks.bold),
         canActivate: (state) => canSetMark(state, this.schema.marks.bold),
         execute: this.commands.toggleBold,
-        icon: this.editor.options.icons.bold,
         title: this.editor.options.messages.bold,
       },
     ];

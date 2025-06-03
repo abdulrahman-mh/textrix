@@ -32,7 +32,6 @@ const Hr = Feature.create({
         name: 'newPart',
         priority: 400,
         title: this.editor.options.messages.addPart,
-        icon: this.editor.options.icons.addDividerInline,
         execute: this.commands.setHorizontalRule,
       },
     ];

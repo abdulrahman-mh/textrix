@@ -71,7 +71,6 @@ const Link = Feature.create({
         priority: 800,
         isActive: (state) => isMarkActive(state, this.schema.marks.link, {}, false),
         canActivate: (state) => canSetMark(state, this.schema.marks.link),
-        icon: this.editor.options.icons.link,
         title: this.editor.options.messages.link,
         divider: true,
       },

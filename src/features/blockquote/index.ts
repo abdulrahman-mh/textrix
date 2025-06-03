@@ -69,7 +69,6 @@ const Quote = Feature.create({
         ),
         execute: this.commands.triggerCycleQuote,
         isVisible: isSelectionNotInsideNodeType(this.schema.nodes.figcaption),
-        icon: this.editor.options.icons.blockquote,
         title: this.editor.options.messages.quote,
       },
     ];

@@ -65,17 +65,20 @@ export class BubbleMenus {
     }
   }
 
-  private createButton(item: Menuitem): HTMLButtonElement {
+  private createButton(item: Menuitem, content?: string): HTMLButtonElement {
     const button = createElement('button', {
       className: 'button--bubbleMenu',
       attributes: { 'data-action': item.name, title: item.title },
     });
 
-    // Ensure item.icon is inserted as HTML
-    if (item.icon) {
-      button.innerHTML = item.icon;
+    const span = document.createElement("span")
+    span.className = 'icon'
+
+    if (content) {
+      span.innerHTML = content
     }
 
+    button.appendChild(span)
     return button;
   }
 
@@ -95,7 +98,6 @@ export class BubbleMenus {
     const cancelButton = this.createButton({
       name: 'cancelLink',
       title: '',
-      icon: this.editor.options.icons.removeThin,
     });
 
     container.append(input, cancelButton);

@@ -33,7 +33,6 @@ export const FloatingMenu = Feature.create<FloatingMenuOptions>({
       {
         name: 'floatingMenu',
         title: this.editor.options.messages.addContent,
-        icon: this.editor.options.icons.addMediaPlus,
       },
     ];
   },

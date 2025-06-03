@@ -10,7 +10,6 @@ import type {
 import type { EditorView } from 'prosemirror-view';
 import type { Messages } from './util/messages';
 import type { Editor } from './Editor';
-import type { Icons } from './util/icons';
 import type { Feature } from './Feature';
 
 // biome-ignore lint/suspicious/noEmptyInterface: <explanation>
@@ -95,9 +94,6 @@ export interface EditorOptions extends EditorOptionsBase {
   }) => void;
 
   editable?: boolean;
-
-  /** Override default icons (SVG/HTML). */
-  icons: Icons;
 
   /**
    * If `true`, the editor will check the content for errors on initialization.

@@ -118,7 +118,6 @@ export class FloatingMenu {
     button.setAttribute('aria-label', item.title);
     button.setAttribute('data-action', item.name);
     if (item.dataActionValue) button.setAttribute('data-action-value', item.dataActionValue);
-    button.innerHTML = item.icon;
     return button;
   }
 

@@ -40,7 +40,6 @@ const H3 = Feature.create({
         isActive: (state) => isNodeActive(state, this.schema.nodes.h3),
         execute: this.commands.toggleH3,
         isVisible: isSelectionNotInsideNodeType(this.schema.nodes.figcaption),
-        icon: this.editor.options.icons.tBigger,
         title: this.editor.options.messages.bigTitle,
       },
     ];

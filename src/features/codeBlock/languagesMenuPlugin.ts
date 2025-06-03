@@ -134,7 +134,7 @@ export default class LanguagesMenu {
       if ((mode === '0' && lang === 'none') || (mode === '1' && lang === 'auto') || (mode === '2' && lang === langs)) {
         const icon = document.createElement('span');
         icon.style.float = 'right';
-        icon.innerHTML = this.editor.options.icons.checkMark;
+        icon.innerHTML = '<span class="svgIcon--19px"><svg width="19" height="19" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.76 4.743a.5.5 0 01.167.687l-5.841 9.558-3.95-4.181a.5.5 0 11.728-.687l3.05 3.23 5.16-8.441a.5.5 0 01.687-.166z" fill="currentColor"></path></svg></span>';
         btn.appendChild(icon);
       }
 

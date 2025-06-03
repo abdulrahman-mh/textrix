@@ -11,7 +11,6 @@ import { getText } from './helpers/getText';
 import { getTextSerializersFromSchema } from './helpers/getTextSerializersFromSchema';
 import { isNodeEmpty } from './helpers/isNodeEmpty';
 
-import icons from './util/icons';
 import messages from './util/messages';
 import { FeaturesManager } from './FeaturesManager';
 import { generateID } from './features/core/uniqueIdPlugin';
@@ -34,7 +33,6 @@ export class Editor {
       element: document.createElement('div'),
       content: options?.content ?? this.getInitialContent(),
       messages: { ...(options?.messages || {}), ...messages },
-      icons: { ...(options?.icons || {}), ...icons },
       editable: true,
       markdownShortcuts: true,
       autoTextDirection: true,

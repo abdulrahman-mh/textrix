@@ -24,7 +24,7 @@
 - Bug: When select an image (inside a grid or not) and start type unexpected behavior is happen?.
 - When dragging a media, Using decorations add transition effect on two nodes that the drop cursor between theme (like Medium do).
 - Add `data-full-width` attribute to images, and use it when zoom on the image in publishing.
-- Menu icons in css pseudo-element, to make the theme can customize the icons also.
+- ✅ Handle editor icons using css, to make the theme can customize the icons. By [@abdulrahman-mh](https://github.com/abdulrahman-mh)
 - In media plugin, create an option on the editor to check if still there an images uploading
 - Filter trailing/leading empty nodes from publishing content, includes empty figcaption and other.
 

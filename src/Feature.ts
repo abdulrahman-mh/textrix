@@ -17,9 +17,6 @@ import type { PasteRule } from './PasteRule';
 import type { PopoverRule } from './features/popover';
 
 export interface PublicMenuitemOptions {
-  /** HTML content inside the item, can be SVG Markup */
-  icon: string;
-
   /** To set a menu divider after this item */
   divider?: boolean;
 

@@ -166,13 +166,11 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
         name: 'image',
         priority: 900,
         title: this.editor.options.messages.addImage,
-        icon: this.editor.options.icons.addMediaImageInline,
       },
       {
         name: 'video',
         priority: 700,
         title: this.editor.options.messages.addVideo,
-        icon: this.editor.options.icons.addMediaVideoInline,
         execute: this.commands.setEmbedPlaceholder({
           message: this.editor.options.messages.videoUrl,
         }),
@@ -181,7 +179,6 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
         priority: 600,
         name: 'embed',
         title: this.editor.options.messages.addEmbed,
-        icon: this.editor.options.icons.addMediaEmbedInline,
         execute: this.commands.setEmbedPlaceholder({
           message: this.editor.options.messages.embedUrl,
         }),
@@ -196,7 +193,6 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
         name: 'inset-center',
         isActive: (state) => isMediaLayoutActive(state, 'inset-center'),
         execute: applyMediaLayout('inset-center', this.editor),
-        icon: this.editor.options.icons.mediaInsetCenter,
         title: this.editor.options.messages.mediaInset,
       },
       {
@@ -205,7 +201,6 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
         isActive: (state) => isMediaLayoutActive(state, 'outset-center'),
         isVisible: (state) => canApplyMediaLayout(state, 'outset-center'),
         execute: applyMediaLayout('outset-center', this.editor),
-        icon: this.editor.options.icons.mediaOutsetCenter,
         title: this.editor.options.messages.mediaOutset,
       },
       {
@@ -214,7 +209,6 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
         isActive: (state) => isMediaLayoutActive(state, 'fill-width'),
         isVisible: (state) => canApplyMediaLayout(state, 'fill-width'),
         execute: applyMediaLayout('fill-width', this.editor),
-        icon: this.editor.options.icons.mediaFillWidth,
         title: this.editor.options.messages.mediaFill,
       },
       // {
