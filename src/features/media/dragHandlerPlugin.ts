@@ -5,11 +5,40 @@ import { getChangedRanges } from '../../helpers/getChangedRanges';
 import { findChildrenInRange } from '../../helpers/findNodes';
 import { getDistributedWidth, resetFigureNode } from './helpers';
 import type { NodeWithPos } from '../../types';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 
 export default function dragHandlerPlugin() {
   return new Plugin({
     key: new PluginKey('dragHandler'),
     view: (view) => new DragHandler(view),
+    state: {
+      init() {
+        return DecorationSet.empty;
+      },
+      apply(tr, oldDecos) {
+        const signal = tr.getMeta('refreshMediaDropAnimation');
+
+        if (signal?.positions) {
+          const [pos1, pos2] = signal.positions;
+
+          const deco1 = Decoration.node(pos1.from, pos1.to, {
+            class: pos1.class || 'drop-animation',
+          });
+          const deco2 = Decoration.node(pos2.from, pos2.to, {
+            class: pos2.class || 'drop-animation',
+          });
+
+          return DecorationSet.create(tr.doc, [deco1, deco2]);
+        }
+
+        return oldDecos.map(tr.mapping, tr.doc);
+      },
+    },
+    props: {
+      decorations(state) {
+        return this.getState(state);
+      },
+    },
     appendTransaction: (trs, { doc: oldDoc }, { doc: newDoc, tr }) => {
       const canProcess =
         trs.some((tr) => tr.docChanged) && !oldDoc.eq(newDoc) && !trs.some((tr) => tr.getMeta('preventFiguresChecks'));

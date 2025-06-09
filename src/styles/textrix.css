@@ -864,6 +864,27 @@ figcaption {
   transition: opacity 0.3s;
 }
 
+/* Media Drop Cursor Animation */
+.drop-animation-up {
+  transform: translateY(-15px);
+  transition: transform 170ms ease-in-out;
+}
+
+.drop-animation-down {
+  transform: translateY(15px);
+  transition: transform 170ms ease-in-out;
+}
+
+.drop-animation-left {
+  transform: translateX(-15px);
+  transition: transform 170ms ease-in-out;
+}
+
+.drop-animation-right {
+  transform: translateX(15px);
+  transition: transform 170ms ease-in-out;
+}
+
 @keyframes pop-upwards {
   0% {
     transform: matrix(0.97, 0, 0, 1, 0, 12);

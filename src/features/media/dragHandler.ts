@@ -163,15 +163,35 @@ export class DragHandler {
 
     this.dropCursor.style.transition = 'none';
 
+    let isHorizontal = false;
+
     if (isFigureCollapsed || grid) {
       // Drop cursor for horizontal placement
+      isHorizontal = true;
 
-      const left = grid
-        ? `${scrollX + (insertBefore ? rect.left - 7 : rect.right + 3)}px`
-        : `${scrollX + (insertBefore ? rect.left - 4 : rect.right)}px`;
+      let cursorLeft: number;
+
+      if (grid) {
+        const gap = 10;
+        const adjustment = 2; // half of cursor width (4px / 2)
+
+        if (insertBefore && element.previousElementSibling) {
+          const prevRect = element.previousElementSibling.getBoundingClientRect();
+          cursorLeft = (prevRect.right + rect.left) / 2 - adjustment;
+        } else if (!insertBefore && element.nextElementSibling) {
+          const nextRect = element.nextElementSibling.getBoundingClientRect();
+          cursorLeft = (rect.right + nextRect.left) / 2 - adjustment;
+        } else {
+          // At the start or end of the grid
+          cursorLeft = insertBefore ? rect.left - gap / 2 - adjustment : rect.right + gap / 2 - adjustment;
+        }
+      } else {
+        // Fallback for non-grid horizontal insert (e.g. between figures)
+        cursorLeft = insertBefore ? rect.left - 2 : rect.right - 2;
+      }
 
       Object.assign(this.dropCursor.style, {
-        left,
+        left: `${scrollX + cursorLeft}px`,
         width: '4px',
         height: `${rect.height}px`,
         top: `${scrollY + rect.top}px`,
@@ -182,7 +202,7 @@ export class DragHandler {
 
       if (insertBefore && prevSibling) {
         const prevRect = prevSibling.getBoundingClientRect();
-        midpointY = (prevRect.bottom + rect.top) / 2 - 1;
+        midpointY = (prevRect.bottom + rect.top) / 2;
       } else if (!insertBefore && nextSibling) {
         const nextRect = nextSibling.getBoundingClientRect();
         midpointY = (rect.bottom + nextRect.top) / 2;
@@ -197,13 +217,65 @@ export class DragHandler {
         width: `${rect.width}px`,
         height: '4px',
         left: `${scrollX + rect.left}px`,
-        top: `${scrollY + midpointY - 4 / 2}px`,
+        top: `${scrollY + midpointY - 2}px`,
         transition: 'top 75ms ease-out',
       });
     }
+
+    // Drop animation
+    let nodeA: Element | null = null;
+    let nodeB: Element | null = null;
+
+    if (insertBefore) {
+      nodeA = element.previousElementSibling || element;
+      nodeB = element;
+    } else {
+      nodeA = element;
+      nodeB = element.nextElementSibling || element;
+    }
+
+    if (nodeA && nodeB && nodeA !== nodeB) {
+      this.dispatchDropAnimation(nodeA, nodeB, isHorizontal);
+    } else if (nodeA) {
+      this.dispatchDropAnimation(nodeA, nodeA, isHorizontal);
+    } else {
+      this.clearDropAnimation();
+    }
+  }
+
+  private clearDropAnimation() {
+    const { state, dispatch } = this.editorView;
+    dispatch(state.tr.setMeta('refreshMediaDropAnimation', {}));
+  }
+
+  private dispatchDropAnimation(elementA?: Element, elementB?: Element, isHorizontal = false) {
+    if (!elementA || !elementB) {
+      this.clearDropAnimation();
+      return;
+    }
+
+    const { state, dispatch } = this.editorView;
+
+    const posA = this.editorView.posAtDOM(elementA, 0) - 1;
+    const posB = this.editorView.posAtDOM(elementB, 0) - 1;
+    const sizeA = state.doc.nodeAt(posA)?.nodeSize || 0;
+    const sizeB = state.doc.nodeAt(posB)?.nodeSize || 0;
+
+    const classA = isHorizontal ? 'drop-animation-left' : 'drop-animation-up';
+    const classB = isHorizontal ? 'drop-animation-right' : 'drop-animation-down';
+
+    dispatch(
+      state.tr.setMeta('refreshMediaDropAnimation', {
+        positions: [
+          { from: posA, to: posA + sizeA, class: classA },
+          { from: posB, to: posB + sizeB, class: classB },
+        ],
+      }),
+    );
   }
 
   private hideDropCursor() {
+    this.clearDropAnimation();
     if (this.dropCursor) {
       this.dropCursor.classList.remove('active');
     }
