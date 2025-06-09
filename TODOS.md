@@ -22,7 +22,7 @@
 - Handle emoji list using InputRules instead of suggestion.
 - Add Medium dark them, Find it on Medium mobile app by enable it.
 - Bug: When select an image (inside a grid or not) and start type unexpected behavior is happen?.
-- When dragging a media, Using decorations add transition effect on two nodes that the drop cursor between theme (like Medium do).
+- ✅ When dragging a media, Using decorations add transition effect on two nodes that the drop cursor between theme (like Medium do). By [@abdulrahman-mh](https://github.com/abdulrahman-mh)
 - Add `data-full-width` attribute to images, and use it when zoom on the image in publishing.
 - ✅ Handle editor icons using css, to make the theme can customize the icons. By [@abdulrahman-mh](https://github.com/abdulrahman-mh)
 - In media plugin, create an option on the editor to check if still there an images uploading
