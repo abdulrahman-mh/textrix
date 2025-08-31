@@ -8,7 +8,7 @@ import type { Node as ProseMirrorNode } from "prosemirror-model";
 function findListItemPosition(
   doc: ProseMirrorNode,
   targetListItem: ProseMirrorNode,
-  startPos: number = 0
+  startPos = 0
 ): number | null {
   let foundPos: number | null = null;
 
