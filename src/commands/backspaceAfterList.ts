@@ -3,10 +3,86 @@ import { TextSelection } from "prosemirror-state";
 import type { Node as ProseMirrorNode } from "prosemirror-model";
 
 /**
+ * Finds the position of a specific list item within the document.
+ */
+function findListItemPosition(
+  doc: ProseMirrorNode,
+  targetListItem: ProseMirrorNode,
+  startPos: number = 0
+): number | null {
+  let foundPos: number | null = null;
+
+  doc.nodesBetween(startPos, doc.nodeSize - 2, (node, pos) => {
+    if (node === targetListItem) {
+      foundPos = pos;
+      return false; // Stop iteration
+    }
+  });
+
+  return foundPos;
+}
+
+/**
+ * Finds the deepest nested list item in a list structure.
+ * Traverses down nested lists to find the last item at the deepest level.
+ */
+function findDeepestLastListItem(listNode: ProseMirrorNode): {
+  listItem: ProseMirrorNode;
+  paragraph: ProseMirrorNode;
+} | null {
+  let currentListItem = listNode.lastChild;
+
+  if (!currentListItem || currentListItem.type.name !== "listItem") {
+    return null;
+  }
+
+  // Keep traversing down nested lists to find the deepest one
+  while (currentListItem) {
+    const paragraph = currentListItem.firstChild;
+    if (!paragraph || paragraph.type.name !== "paragraph") {
+      break;
+    }
+
+    // Check if this list item has nested lists
+    let hasNestedList = false;
+    let nestedList: ProseMirrorNode | null = null;
+
+    for (let i = 1; i < currentListItem.childCount; i++) {
+      const child: ProseMirrorNode = currentListItem.child(i);
+      if (
+        child.type.name === "bulletList" ||
+        child.type.name === "orderedList"
+      ) {
+        hasNestedList = true;
+        nestedList = child;
+        break;
+      }
+    }
+
+    if (hasNestedList && nestedList) {
+      // Go deeper into the nested list
+      const nestedLastItem: ProseMirrorNode | null = nestedList.lastChild;
+      if (nestedLastItem && nestedLastItem.type.name === "listItem") {
+        currentListItem = nestedLastItem;
+        continue;
+      }
+    }
+
+    // No more nested lists, this is our deepest item
+    return {
+      listItem: currentListItem,
+      paragraph: paragraph,
+    };
+  }
+
+  return null;
+}
+
+/**
  * Custom backspace behavior when cursor is at the start of a paragraph that follows a list.
  * Handles two cases:
- * 1. If the last list item is empty, removes it and shifts the paragraph up
- * 2. If the last list item has content, moves the paragraph content to the end of the last list item
+ * 1. If the deepest nested list item is empty, removes it and shifts the paragraph up
+ * 2. If the deepest nested list item has content, moves the paragraph content to the end of it
  */
 export function backspaceAfterList(
   state: EditorState,
@@ -54,17 +130,15 @@ export function backspaceAfterList(
     return false;
   }
 
-  const lastListItem = listNode.lastChild;
-  if (!lastListItem || lastListItem.type.name !== "listItem") {
+  // Find the deepest nested list item instead of just the last top-level item
+  const deepestItem = findDeepestLastListItem(listNode);
+  if (!deepestItem) {
     return false;
   }
 
-  const lastParagraph = lastListItem.firstChild;
-  if (!lastParagraph || lastParagraph.type.name !== "paragraph") {
-    return false;
-  }
+  const { listItem: lastListItem, paragraph: lastParagraph } = deepestItem;
 
-  // Check if the last list item is empty
+  // Check if the deepest list item is empty
   const isLastListItemEmpty = lastParagraph.textContent.trim() === "";
 
   if (!dispatch) {
@@ -78,23 +152,9 @@ export function backspaceAfterList(
   if (isLastListItemEmpty) {
     // Case 1: Remove the empty list item and shift paragraph up
 
-    // Check if this is the only listItem in the list
-    const isOnlyListItem = listNode.childCount === 1;
-
-    if (isOnlyListItem) {
-      // If this is the only listItem, remove the entire list
-      const listStartPos = prevNodePos;
-      const listEndPos = listStartPos + listNode.nodeSize;
-      tr.delete(listStartPos, listEndPos);
-    } else {
-      // If there are other listItems, just remove the last one
-
-      // Calculate position of the last list item
-      let lastListItemPos = prevNodePos + 1;
-      for (let i = 0; i < listNode.childCount - 1; i++) {
-        lastListItemPos += listNode.child(i).nodeSize;
-      }
-
+    // Find the position of the deepest list item to remove it
+    const lastListItemPos = findListItemPosition(doc, lastListItem);
+    if (lastListItemPos !== null) {
       const lastListItemEndPos = lastListItemPos + lastListItem.nodeSize;
       tr.delete(lastListItemPos, lastListItemEndPos);
     }
@@ -104,32 +164,30 @@ export function backspaceAfterList(
     const newCursorPos = tr.doc.resolve(mappedParagraphPos + 1); // +1 to get inside the paragraph
     tr.setSelection(new TextSelection(newCursorPos));
   } else {
-    // Case 2: Move paragraph content to the end of the last list item
+    // Case 2: Move paragraph content to the end of the deepest list item
 
-    // Calculate position of the last paragraph in the list
-    let lastListItemPos = prevNodePos + 1;
-    for (let i = 0; i < listNode.childCount - 1; i++) {
-      lastListItemPos += listNode.child(i).nodeSize;
+    // Find the position of the deepest list item's paragraph
+    const lastListItemPos = findListItemPosition(doc, lastListItem);
+    if (lastListItemPos !== null) {
+      const paragraphStartPos = lastListItemPos + 1; // +1 to get inside the list item
+      const endOfLastParagraph = paragraphStartPos + lastParagraph.nodeSize - 1;
+
+      const insertionPos = endOfLastParagraph;
+      const currentParagraphContent = currentParagraphNode.content;
+
+      if (currentParagraphContent.size > 0) {
+        tr.insert(insertionPos, currentParagraphContent);
+      }
+
+      const mappedFrom = tr.mapping.map(currentParagraphPos);
+      const mappedTo = tr.mapping.map(
+        currentParagraphPos + currentParagraphNode.nodeSize
+      );
+      tr.delete(mappedFrom, mappedTo);
+
+      const targetPos = tr.mapping.map(insertionPos, -1);
+      tr.setSelection(new TextSelection(tr.doc.resolve(targetPos)));
     }
-
-    const paragraphStartPos = lastListItemPos + 1;
-    const endOfLastParagraph = paragraphStartPos + lastParagraph.nodeSize - 1;
-
-    const insertionPos = endOfLastParagraph;
-    const currentParagraphContent = currentParagraphNode.content;
-
-    if (currentParagraphContent.size > 0) {
-      tr.insert(insertionPos, currentParagraphContent);
-    }
-
-    const mappedFrom = tr.mapping.map(currentParagraphPos);
-    const mappedTo = tr.mapping.map(
-      currentParagraphPos + currentParagraphNode.nodeSize
-    );
-    tr.delete(mappedFrom, mappedTo);
-
-    const targetPos = tr.mapping.map(insertionPos, -1);
-    tr.setSelection(new TextSelection(tr.doc.resolve(targetPos)));
   }
 
   dispatch(tr.scrollIntoView());

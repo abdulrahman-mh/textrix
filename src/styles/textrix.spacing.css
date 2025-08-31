@@ -9,7 +9,12 @@
   margin-top: 0 !important;
 }
 
-.textrix li > * {
+/* Reset margins for direct children of list items, but allow nested lists to have spacing */
+.textrix li > p {
+  margin: 0 !important;
+}
+
+.textrix li > *:not(ul):not(ol) {
   margin: 0 !important;
 }
 
@@ -289,6 +294,31 @@
   margin-right: unset !important;
 }
 
+/* Nested list spacing - ensure consistent spacing for sublists */
+.textrix li ul,
+.textrix li ol {
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+/* Ensure nested lists don't have extra bottom margin on their last item */
+.textrix li ul > li:last-child,
+.textrix li ol > li:last-child {
+  margin-bottom: 0;
+}
+
+/* Adjust spacing between list items that contain nested lists */
+.textrix li:has(ul),
+.textrix li:has(ol) {
+  margin-bottom: 14px;
+}
+
+/* For browsers that don't support :has(), use a fallback */
+.textrix li ul + *,
+.textrix li ol + * {
+  margin-top: 0;
+}
+
 .textrix ol li {
   padding-inline-start: 0 !important;
 }
@@ -505,6 +535,12 @@
   .textrix blockquote.pullquote + ol {
     margin-top: 26px;
   }
+
+  /* Nested list spacing for mobile */
+  .textrix li ul,
+  .textrix li ol {
+    margin-top: 10px;
+  }
 }
 
 @media print {
@@ -577,6 +613,12 @@
 
   .textrix ul > li:before {
     padding-top: 3px;
+  }
+
+  /* Nested list spacing for smaller screens */
+  .textrix li ul,
+  .textrix li ol {
+    margin-top: 8px;
   }
 }
 
