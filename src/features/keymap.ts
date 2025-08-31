@@ -1,4 +1,4 @@
-import { undo, redo } from 'prosemirror-history';
+import { undo, redo } from "prosemirror-history";
 import {
   newlineInCode,
   createParagraphNear,
@@ -11,18 +11,25 @@ import {
   deleteSelection,
   selectTextblockStart,
   selectTextblockEnd,
-} from 'prosemirror-commands';
-import { splitListItem, sinkListItem, liftListItem } from 'prosemirror-schema-list';
+} from "prosemirror-commands";
+import {
+  splitListItem,
+  sinkListItem,
+  liftListItem,
+} from "prosemirror-schema-list";
 
-import normalizeNode from '../commands/normalizeNode';
-import { deletePlaceholder } from '../commands/deletePlaceholder';
-import { undoInputRule } from '../commands/undoInputRule';
-import { isiOS, isMacOS } from '../helpers/isMacOS';
+import normalizeNode from "../commands/normalizeNode";
+import { deletePlaceholder } from "../commands/deletePlaceholder";
+import { undoInputRule } from "../commands/undoInputRule";
+import { backspaceInList } from "../commands/backspaceInList";
+import { backspaceAfterList } from "../commands/backspaceAfterList";
 
-import type { Editor } from '../Editor';
-import type { Schema } from 'prosemirror-model';
-import type { Commands } from '../types';
-import { AllSelection, type Command } from 'prosemirror-state';
+import { isiOS, isMacOS } from "../helpers/isMacOS";
+
+import type { Editor } from "../Editor";
+import type { Schema } from "prosemirror-model";
+import type { Commands } from "../types";
+import { AllSelection, type Command } from "prosemirror-state";
 
 const chainCommands =
   (...commands: Array<Command | undefined | null>): Command =>
@@ -44,34 +51,59 @@ const selectAll: Command = (state, dispatch) => {
 export default function buildEditorKeyMaps({
   schema,
   commands,
-}: { schema: Schema; commands: Commands; editor: Editor }) {
+}: {
+  schema: Schema;
+  commands: Commands;
+  editor: Editor;
+}) {
   const isMac = isMacOS() || isiOS();
   const keys: Record<string, any> = {};
 
   // Backspace Commands
   const backspace = chainCommands(
-    undoInputRule,
-    normalizeNode,
-    deleteSelection,
-    joinBackward,
-    selectNodeBackward,
-    deletePlaceholder,
+    (state, dispatch) => {
+      return undoInputRule(state, dispatch);
+    },
+    (state, dispatch) => {
+      return normalizeNode(state, dispatch);
+    },
+    (state, dispatch) => {
+      return deleteSelection(state, dispatch);
+    },
+    (state, dispatch) => {
+      return backspaceInList(state, dispatch);
+    },
+    (state, dispatch) => {
+      return backspaceAfterList(state, dispatch);
+    },
+    (state, dispatch) => {
+      return joinBackward(state, dispatch);
+    },
+    (state, dispatch) => {
+      return selectNodeBackward(state, dispatch);
+    },
+    (state, dispatch) => {
+      return deletePlaceholder(state, dispatch);
+    }
   );
-  keys['Backspace'] = keys['Mod-Backspace'] = keys['Shift-Backspace'] = backspace;
+  keys["Backspace"] =
+    keys["Mod-Backspace"] =
+    keys["Shift-Backspace"] =
+      backspace;
 
   // Delete Commands
   const del = chainCommands(deleteSelection, joinForward, selectNodeForward);
-  keys['Mod-Delete'] = del;
+  keys["Mod-Delete"] = del;
 
-  keys['Enter'] = chainCommands(
+  keys["Enter"] = chainCommands(
     newlineInCode,
     commands?.newLineInMedia,
     schema.nodes.listItem ? splitListItem(schema.nodes.listItem) : null,
     createParagraphNear,
     liftEmptyBlock,
-    splitBlock,
+    splitBlock
   );
-  keys['Mod-Enter'] = chainCommands(newlineInCode, commands.setHorizontalRule);
+  keys["Mod-Enter"] = chainCommands(newlineInCode, commands.setHorizontalRule);
 
   // Lists Commands
   const { listItem } = schema.nodes;
@@ -79,27 +111,31 @@ export default function buildEditorKeyMaps({
     const liftList = liftListItem(listItem);
     const sinkList = sinkListItem(listItem);
 
-    keys['Mod-['] = liftList;
-    keys['Shift-Tab'] = liftList;
-    keys['Mod-]'] = sinkList;
-    keys['Tab'] = chainCommands(commands.tabInCode, sinkList);
+    keys["Mod-["] = liftList;
+    keys["Shift-Tab"] = liftList;
+    keys["Mod-]"] = sinkList;
+    keys["Tab"] = chainCommands(commands.tabInCode, sinkList);
   } else {
-    keys['Tab'] = commands.tabInCode;
+    keys["Tab"] = commands.tabInCode;
   }
 
   // Selection Commands
-  keys['Mod-a'] = selectAll;
+  keys["Mod-a"] = selectAll;
 
   if (isMac) {
-    keys['Ctrl-h'] = keys['Alt-Backspace'] = backspace;
-    keys['Ctrl-d'] = keys['Ctrl-Alt-Backspace'] = keys['Alt-Delete'] = keys['Alt-d'] = del;
-    keys['Ctrl-a'] = selectTextblockStart;
-    keys['Ctrl-e'] = selectTextblockEnd;
+    keys["Ctrl-h"] = keys["Alt-Backspace"] = backspace;
+    keys["Ctrl-d"] =
+      keys["Ctrl-Alt-Backspace"] =
+      keys["Alt-Delete"] =
+      keys["Alt-d"] =
+        del;
+    keys["Ctrl-a"] = selectTextblockStart;
+    keys["Ctrl-e"] = selectTextblockEnd;
   }
 
   // Undo/Redo Commands
-  keys['Mod-z'] = undo;
-  keys['Mod-Shift-z'] = keys['Mod-y'] = redo;
+  keys["Mod-z"] = undo;
+  keys["Mod-Shift-z"] = keys["Mod-y"] = redo;
 
   return keys;
 }

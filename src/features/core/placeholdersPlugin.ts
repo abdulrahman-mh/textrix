@@ -1,15 +1,20 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { Decoration, DecorationSet } from 'prosemirror-view';
-import type { Node as ProseMirrorNode } from 'prosemirror-model';
-import type { Editor } from '../../Editor';
+import { Plugin, PluginKey } from "prosemirror-state";
+import { Decoration, DecorationSet } from "prosemirror-view";
+import type { Node as ProseMirrorNode } from "prosemirror-model";
+import type { Editor } from "../../Editor";
 
 export function placeholdersPlugin(editor: Editor) {
   const {
-    messages: { titleLabel: title, mainPlaceholder: tellYourStory, imgCaption, embedCaption },
+    messages: {
+      titleLabel: title,
+      mainPlaceholder: tellYourStory,
+      imgCaption,
+      embedCaption,
+    },
   } = editor.options;
 
-  const headingTypes = ['paragraph', 'h3', 'h4'];
-  const generalTypes = ['figcaption'];
+  const headingTypes = ["paragraph", "h3", "h4"];
+  const generalTypes = ["figcaption"];
   const validTypes = [...headingTypes, ...generalTypes];
 
   // Initial value to True, to render placeholders when editor first initialize
@@ -30,11 +35,14 @@ export function placeholdersPlugin(editor: Editor) {
   }) {
     if (defaultMessage) return defaultMessage;
 
-    if (node.type.name === 'figcaption' && parent && parent.content.size > 0) {
-      return parent.firstChild?.type.name === 'image' ? imgCaption : embedCaption;
+    if (node.type.name === "figcaption" && parent && parent.content.size > 0) {
+      return parent.firstChild?.type.name === "image"
+        ? imgCaption
+        : embedCaption;
     }
 
-    if (headingTypes.includes(node.type.name)) {
+    // Only apply title/content placeholder logic to nodes that are direct children of the document
+    if (headingTypes.includes(node.type.name) && parent?.type.name === "doc") {
       if (childCount === 1) return tellYourStory;
       if (childCount <= 2) return index === 0 ? title : tellYourStory;
     }
@@ -42,9 +50,16 @@ export function placeholdersPlugin(editor: Editor) {
     return null;
   }
 
-  function isValidPlaceholder({ node, index }: { node: ProseMirrorNode; index: number }) {
+  function isValidPlaceholder({
+    node,
+    index,
+  }: {
+    node: ProseMirrorNode;
+    index: number;
+  }) {
     return (
-      (generalTypes.includes(node.type.name) || (index <= 2 && headingTypes.includes(node.type.name))) &&
+      (generalTypes.includes(node.type.name) ||
+        (index <= 2 && headingTypes.includes(node.type.name))) &&
       !node.textContent
     );
   }
@@ -52,7 +67,7 @@ export function placeholdersPlugin(editor: Editor) {
   let secondPlaceholderHidden = false;
 
   return new Plugin({
-    key: new PluginKey('placeholders'),
+    key: new PluginKey("placeholders"),
 
     state: {
       init() {
@@ -60,13 +75,13 @@ export function placeholdersPlugin(editor: Editor) {
       },
       apply(tr, state, oldState, newState) {
         // Handle `removePlaceholder` metadata
-        const removeMeta = tr.getMeta('removePlaceholder');
+        const removeMeta = tr.getMeta("removePlaceholder");
         if (removeMeta && removeMeta.pos !== undefined) {
           state.placeholders.set(removeMeta.pos, false);
         }
 
         // Process `addPlaceholder` metadata
-        const addMeta = tr.getMeta('addPlaceholder');
+        const addMeta = tr.getMeta("addPlaceholder");
         if (addMeta?.pos !== undefined) {
           state.placeholders.set(addMeta.pos, {
             message: addMeta.message,
@@ -77,7 +92,8 @@ export function placeholdersPlugin(editor: Editor) {
           }
         }
 
-        if (!tr.docChanged && !state.placeholders.size && !allowAnyTr) return state; // Skip unnecessary updates
+        if (!tr.docChanged && !state.placeholders.size && !allowAnyTr)
+          return state; // Skip unnecessary updates
 
         const newDecorations: Decoration[] = [];
         const childCount = newState.doc.childCount;
@@ -109,9 +125,9 @@ export function placeholdersPlugin(editor: Editor) {
             if (placeholderMessage) {
               newDecorations.push(
                 Decoration.node(pos, pos + node.nodeSize, {
-                  'data-placeholder': placeholderMessage,
+                  "data-placeholder": placeholderMessage,
                   class: placeholder.class,
-                }),
+                })
               );
 
               return false;
@@ -119,33 +135,49 @@ export function placeholdersPlugin(editor: Editor) {
           }
 
           if (!isValidPlaceholder({ node, index })) return;
-          let placeholderMessage = getMessage({ childCount, index, node, parent });
+          let placeholderMessage = getMessage({
+            childCount,
+            index,
+            node,
+            parent,
+          });
 
-          // Custom handling of first two lines placeholders
-          if (childCount === 1) {
-            placeholderMessage = tellYourStory;
-            secondPlaceholderHidden = false;
-          } else if (childCount === 2) {
-            if (index === 0) {
-              placeholderMessage = title;
-            } else if (index === 1 && oldChildCount <= 2) {
-              const wasEmptyBefore =
-                index < oldState.doc.childCount && oldState.doc.child(index)?.textContent !== node.textContent;
-
-              placeholderMessage =
-                !secondPlaceholderHidden || oldChildCount === 1 || wasEmptyBefore ? tellYourStory : null;
-            } else {
-              placeholderMessage = null;
-              secondPlaceholderHidden = true;
-            }
-
-            if (placeholderMessage === tellYourStory) {
+          // Custom handling of first two lines placeholders - only for direct children of document
+          if (parent?.type.name === "doc") {
+            if (childCount === 1) {
+              placeholderMessage = tellYourStory;
               secondPlaceholderHidden = false;
+            } else if (childCount === 2) {
+              if (index === 0) {
+                placeholderMessage = title;
+              } else if (index === 1 && oldChildCount <= 2) {
+                const wasEmptyBefore =
+                  index < oldState.doc.childCount &&
+                  oldState.doc.child(index)?.textContent !== node.textContent;
+
+                placeholderMessage =
+                  !secondPlaceholderHidden ||
+                  oldChildCount === 1 ||
+                  wasEmptyBefore
+                    ? tellYourStory
+                    : null;
+              } else {
+                placeholderMessage = null;
+                secondPlaceholderHidden = true;
+              }
+
+              if (placeholderMessage === tellYourStory) {
+                secondPlaceholderHidden = false;
+              }
             }
           }
 
           if (placeholderMessage) {
-            newDecorations.push(Decoration.node(pos, pos + node.nodeSize, { 'data-placeholder': placeholderMessage }));
+            newDecorations.push(
+              Decoration.node(pos, pos + node.nodeSize, {
+                "data-placeholder": placeholderMessage,
+              })
+            );
           }
         });
 

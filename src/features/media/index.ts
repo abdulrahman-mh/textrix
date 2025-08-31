@@ -1,19 +1,19 @@
-import type { Command } from 'prosemirror-state';
-import { Feature, type Menuitem } from '../../Feature';
-import dragHandlerPlugin from './dragHandlerPlugin';
+import type { Command } from "prosemirror-state";
+import { Feature, type Menuitem } from "../../Feature";
+import dragHandlerPlugin from "./dragHandlerPlugin";
 import {
   applyMediaLayout,
   canApplyMediaLayout,
   isMediaLayoutActive,
   newLineInMedia,
   type MediaLayout,
-} from './helpers';
-import { extendNodeSchema } from './schema';
-import { urlEmbedInputRule } from './urlEmbedInputRule';
-import type { EmbedMedia } from '../../types';
-import { insertFigcaptionPlugin } from './insertFigcaptionPlugin';
+} from "./helpers";
+import { extendNodeSchema } from "./schema";
+import { urlEmbedInputRule } from "./urlEmbedInputRule";
+import type { EmbedMedia } from "../../types";
+import { insertFigcaptionPlugin } from "./insertFigcaptionPlugin";
 
-declare module '../../types' {
+declare module "../../types" {
   interface Commands {
     setEmbedPlaceholder: (options: {
       message: string;
@@ -112,10 +112,13 @@ export interface MediaOptions {
   mediaFocusOffset?: number;
 }
 
-type MediaStorage = Pick<MediaOptions, 'mediaFocusOffset' | 'uploadImage' | 'getOptimizedImageUrl'>;
+type MediaStorage = Pick<
+  MediaOptions,
+  "mediaFocusOffset" | "uploadImage" | "getOptimizedImageUrl"
+>;
 
 export const Media = Feature.create<MediaOptions, MediaStorage>({
-  name: 'media',
+  name: "media",
 
   addOptions() {
     return {
@@ -138,12 +141,12 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
         (state, dispatch) => {
           if (dispatch) {
             dispatch(
-              state.tr.setMeta('addPlaceholder', {
+              state.tr.setMeta("addPlaceholder", {
                 pos: state.selection.from - 1,
                 message,
                 className,
                 removeOnAnyTr: true,
-              }),
+              })
             );
           }
           return true;
@@ -163,12 +166,12 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
   addFloatingMenuItems() {
     return [
       {
-        name: 'image',
+        name: "image",
         priority: 900,
         title: this.editor.options.messages.addImage,
       },
       {
-        name: 'video',
+        name: "video",
         priority: 700,
         title: this.editor.options.messages.addVideo,
         execute: this.commands.setEmbedPlaceholder({
@@ -177,7 +180,7 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
       },
       {
         priority: 600,
-        name: 'embed',
+        name: "embed",
         title: this.editor.options.messages.addEmbed,
         execute: this.commands.setEmbedPlaceholder({
           message: this.editor.options.messages.embedUrl,
@@ -189,26 +192,26 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
   addBubbleMenuItems(): Menuitem[] {
     return [
       {
-        type: 'media',
-        name: 'inset-center',
-        isActive: (state) => isMediaLayoutActive(state, 'inset-center'),
-        execute: applyMediaLayout('inset-center', this.editor),
+        type: "media",
+        name: "inset-center",
+        isActive: (state) => isMediaLayoutActive(state, "inset-center"),
+        execute: applyMediaLayout("inset-center", this.editor),
         title: this.editor.options.messages.mediaInset,
       },
       {
-        type: 'media',
-        name: 'outset-center',
-        isActive: (state) => isMediaLayoutActive(state, 'outset-center'),
-        isVisible: (state) => canApplyMediaLayout(state, 'outset-center'),
-        execute: applyMediaLayout('outset-center', this.editor),
+        type: "media",
+        name: "outset-center",
+        isActive: (state) => isMediaLayoutActive(state, "outset-center"),
+        isVisible: (state) => canApplyMediaLayout(state, "outset-center"),
+        execute: applyMediaLayout("outset-center", this.editor),
         title: this.editor.options.messages.mediaOutset,
       },
       {
-        type: 'media',
-        name: 'fill-width',
-        isActive: (state) => isMediaLayoutActive(state, 'fill-width'),
-        isVisible: (state) => canApplyMediaLayout(state, 'fill-width'),
-        execute: applyMediaLayout('fill-width', this.editor),
+        type: "media",
+        name: "fill-width",
+        isActive: (state) => isMediaLayoutActive(state, "fill-width"),
+        isVisible: (state) => canApplyMediaLayout(state, "fill-width"),
+        execute: applyMediaLayout("fill-width", this.editor),
         title: this.editor.options.messages.mediaFill,
       },
       // {
@@ -244,7 +247,13 @@ export const Media = Feature.create<MediaOptions, MediaStorage>({
 
   addInputRules() {
     if (this.options.fetchMediaEmbedData) {
-      return [urlEmbedInputRule(this.editor, this.options.fetchMediaEmbedData, this.view)];
+      return [
+        urlEmbedInputRule(
+          this.editor,
+          this.options.fetchMediaEmbedData,
+          this.view
+        ),
+      ];
     }
     return [];
   },

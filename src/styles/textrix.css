@@ -109,13 +109,22 @@ figure {
     font-size: 24px;
     line-height: 1.4;
   }
+  .textrix ul > li,
+  .textrix ol > li {
+    font-size: 18px;
+    line-height: 1.58;
+    letter-spacing: -0.004em;
+  }
+
+  .textrix ul > li:before {
+    font-size: 14.4px;
+  }
+
   .textrix li {
     font-size: 18px;
     line-height: 1.58;
   }
-  .textrix ul > li:before {
-    font-size: 14.4px;
-  }
+
   .textrix pre,
   .textrix p > code {
     font-size: 14px;
@@ -143,14 +152,76 @@ figure {
   color: #aaa;
 }
 
+/* List styling */
+.textrix ul,
+.textrix ol {
+  counter-reset: post;
+  list-style: none;
+}
+
+.textrix ul > li,
+.textrix ol > li {
+  position: relative;
+  --x-height-multiplier: 0.375;
+  --baseline-multiplier: 0.17;
+  letter-spacing: 0.01rem;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 21px;
+  line-height: 1.58;
+  letter-spacing: -0.003em;
+}
+
+.textrix ul > li:before,
+.textrix ol > li:before {
+  position: absolute;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: right;
+}
+
+.textrix ol > li:before {
+  font-feature-settings: "liga" on, "lnum" on;
+  -moz-font-feature-settings: "liga" on, "lnum" on;
+  -webkit-font-feature-settings: "liga" on, "lnum" on;
+  counter-increment: post;
+  content: counter(post) ".";
+}
+
+.textrix ul > li:before {
+  content: "\2022";
+  font-size: 16.8px;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
 .textrix li {
   font-weight: 400;
   font-style: normal;
   font-size: 21px;
   line-height: 1.58;
 }
-.textrix ul > li:before {
-  font-size: 16.8px;
+
+/* Print-specific adjustments for lists */
+@media print {
+  .textrix ul > li:before {
+    font-size: 11.42px;
+  }
+
+  .textrix ul > li,
+  .textrix ol > li {
+    font-size: 14.28px;
+  }
+}
+
+/* Remove flex display from current implementation */
+.textrix ul li {
+  display: block !important;
+  align-items: unset !important;
+}
+
+.textrix ul li::before {
+  flex-shrink: unset !important;
 }
 
 .drop-cursor {

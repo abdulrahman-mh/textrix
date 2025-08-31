@@ -9,27 +9,23 @@
   margin-top: 0 !important;
 }
 
-.textrix li > * {
+/* Reset margins for direct children of list items, but allow nested lists to have spacing */
+.textrix li > p {
+  margin: 0 !important;
+}
+
+.textrix li > *:not(ul):not(ol) {
   margin: 0 !important;
 }
 
 .textrix p {
   margin-bottom: 0;
 }
-.textrix li {
-  margin-left: 30px;
-  margin-bottom: 14px;
-}
-.textrix li:last-child {
-  margin-bottom: 0;
-}
 .textrix p {
   margin-top: 38px;
 }
 .textrix blockquote + p,
-.textrix p + p,
-.textrix ul + p,
-.textrix ol + p {
+.textrix p + p {
   margin-top: 29px;
 }
 .textrix h2 + p {
@@ -51,9 +47,7 @@
   margin-top: 0;
   padding-top: 27px;
 }
-.textrix p + blockquote,
-.textrix ul + blockquote,
-.textrix ol + blockquote {
+.textrix p + blockquote {
   margin-top: 29px;
 }
 .textrix h2 + blockquote {
@@ -68,42 +62,11 @@
 .textrix blockquote.pullquote + blockquote {
   margin-top: 54px;
 }
-.textrix ul,
-.textrix ol {
-  margin-top: 38px;
-}
-.textrix blockquote + ul,
-.textrix blockquote + ol,
-.textrix p + ol,
-.textrix p + ul,
-.textrix ul + ul,
-.textrix ol + ol,
-.textrix ul + ol,
-.textrix ol + ul {
-  margin-top: 29px;
-}
-.textrix h2 + ul,
-.textrix h2 + ol {
-  margin-top: 18px;
-}
-.textrix h3 + ul,
-.textrix h3 + ol {
-  margin-top: 12px;
-}
-.textrix h4 + ul,
-.textrix h4 + ol {
-  margin-top: 10px;
-}
-.textrix blockquote.pullquote + ul,
-.textrix blockquote.pullquote + ol {
-  margin-top: 54px;
-}
+
 .textrix .pullquote {
   margin-top: 64px;
 }
-.textrix blockquote:not(.pullquote) + .pullquote p + .pullquote,
-.textrix ul + .pullquote,
-.textrix ol + .pullquote {
+.textrix blockquote:not(.pullquote) + .pullquote p + .pullquote {
   margin-top: 55px;
 }
 .textrix h2 + .pullquote {
@@ -119,9 +82,7 @@
   margin-top: 24px;
 }
 .textrix blockquote + h2,
-.textrix p + h2,
-.textrix ul + h2,
-.textrix ol + h2 {
+.textrix p + h2 {
   margin-top: 54px;
 }
 .textrix h3 + h2 {
@@ -137,9 +98,7 @@
   margin-top: 53px;
 }
 .textrix blockquote + h3,
-.textrix p + h3,
-.textrix ul + h3,
-.textrix ol + h3 {
+.textrix p + h3 {
   margin-top: 56px;
 }
 .textrix h2 + h3 {
@@ -152,9 +111,7 @@
   margin-top: 53px;
 }
 .textrix blockquote + h4,
-.textrix p + h4,
-.textrix ul + h4,
-.textrix ol + h4 {
+.textrix p + h4 {
   margin-top: 30px;
 }
 .textrix h2 + h4 {
@@ -197,30 +154,12 @@
 .textrix .pullquote + blockquote {
   margin-top: 54px;
 }
-.textrix blockquote + ol,
-.textrix blockquote + ul,
-.textrix p + ol,
-.textrix p + ul,
-.textrix ul + ul,
-.textrix ol + ol,
-.textrix ul + ol,
-.textrix ol + ul {
-  margin-top: 29px;
-}
-.textrix .pullquote + ul,
-.textrix .pullquote + ol {
-  margin-top: 54px;
-}
 .textrix blockquote + .pullquote,
-.textrix p + .pullquote,
-.textrix ul + .pullquote,
-.textrix ol + .pullquote {
+.textrix p + .pullquote {
   margin-top: 55px;
 }
 .textrix .pullquote + blockquote,
-.textrix .pullquote + p,
-.textrix ul + .pullquote,
-.textrix ol + .pullquote {
+.textrix .pullquote + p {
   margin-top: 55px;
 }
 .textrix h4 + .pullquote {
@@ -253,11 +192,7 @@
 .textrix blockquote + figure,
 .textrix p + figure,
 .textrix blockquote + pre,
-.textrix p + pre,
-.textrix ul + figure,
-.textrix ol + figure,
-.textrix ul + pre,
-.textrix ol + pre {
+.textrix p + pre {
   margin-top: 43px;
 }
 .textrix h2 + figure,
@@ -280,14 +215,120 @@
   margin-top: 52px;
   margin-bottom: 42px;
 }
+
+/* List spacing */
+.textrix ul,
+.textrix ol {
+  margin: 0;
+  padding: 0;
+}
+
+.textrix ul + ul,
+.textrix ol + ol,
+.textrix ul + ol,
+.textrix ol + ul {
+  margin-top: 29px;
+}
+
+.textrix p + ul,
+.textrix p + ol {
+  margin-top: 29px;
+}
+
+.textrix blockquote + ul,
+.textrix blockquote + ol {
+  margin-top: 29px;
+}
+
+.textrix h2 + ul,
+.textrix h2 + ol {
+  margin-top: 18px;
+}
+
+.textrix h3 + ul,
+.textrix h3 + ol {
+  margin-top: 12px;
+}
+
+.textrix h4 + ul,
+.textrix h4 + ol {
+  margin-top: 10px;
+}
+
+.textrix blockquote.pullquote + ul,
+.textrix blockquote.pullquote + ol {
+  margin-top: 54px;
+}
+
+.textrix ul > li,
+.textrix ol > li {
+  margin-left: 30px;
+  margin-bottom: 14px;
+}
+
+.textrix ul > li:last-child,
+.textrix ol > li:last-child {
+  margin-bottom: 0;
+}
+
+.textrix ul > li:before,
+.textrix ol > li:before {
+  width: 78px;
+  margin-left: -78px;
+}
+
+.textrix ol > li:before {
+  padding-right: 12px;
+}
+
+.textrix ul > li:before {
+  padding-top: 4px;
+  padding-right: 15px;
+}
+
+.textrix ul li {
+  padding-inline-start: 0 !important;
+}
+
+.textrix ul li::before {
+  margin-right: unset !important;
+}
+
+/* Nested list spacing - ensure consistent spacing for sublists */
+.textrix li ul,
+.textrix li ol {
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+/* Ensure nested lists don't have extra bottom margin on their last item */
+.textrix li ul > li:last-child,
+.textrix li ol > li:last-child {
+  margin-bottom: 0;
+}
+
+/* Adjust spacing between list items that contain nested lists */
+.textrix li:has(ul),
+.textrix li:has(ol) {
+  margin-bottom: 14px;
+}
+
+/* For browsers that don't support :has(), use a fallback */
+.textrix li ul + *,
+.textrix li ol + * {
+  margin-top: 0;
+}
+
+.textrix ol li {
+  padding-inline-start: 0 !important;
+}
+
 @media (max-width: 767px) {
   .textrix p {
     margin-top: 30px;
   }
   .textrix blockquote + p,
-  .textrix p + p,
-  .textrix ul + p,
-  .textrix ol + p {
+  .textrix p + p {
     margin-top: 21px;
   }
   .textrix h2 + p {
@@ -309,9 +350,7 @@
     margin-top: 0;
     padding-top: 19px;
   }
-  .textrix p + blockquote,
-  .textrix ul + blockquote,
-  .textrix ol + blockquote {
+  .textrix p + blockquote {
     margin-top: 21px;
   }
   .textrix h2 + blockquote {
@@ -326,40 +365,12 @@
   .textrix .pullquote + blockquote {
     margin-top: 26px;
   }
-  .textrix ul,
-  .textrix ol {
-    margin-top: 30px;
-  }
-  .textrix blockquote + ul,
-  .textrix p + ul,
-  .textrix p + ol,
-  .textrix ul + ul,
-  .textrix ol + ol {
-    margin-top: 21px;
-  }
-  .textrix h2 + ul,
-  .textrix h2 + ol {
-    margin-top: 14px;
-  }
-  .textrix h3 + ul,
-  .textrix h3 + ol {
-    margin-top: 8px;
-  }
-  .textrix h4 + ul,
-  .textrix h4 + ol {
-    margin-top: 6px;
-  }
-  .textrix .pullquote + ul,
-  .textrix .pullquote + ol {
-    margin-top: 26px;
-  }
+
   .textrix .pullquote {
     margin-top: 36px;
   }
   .textrix blockquote + .pullquote,
-  .textrix p + .pullquote,
-  .textrix ul + .pullquote,
-  .textrix ol + .pullquote {
+  .textrix p + .pullquote {
     margin-top: 27px;
   }
   .textrix h2 + .pullquote {
@@ -378,9 +389,7 @@
     margin-top: 35px;
   }
   .textrix blockquote + h2,
-  .textrix p + h2,
-  .textrix ul + h2,
-  .textrix ol + h2 {
+  .textrix p + h2 {
     margin-top: 26px;
   }
   .textrix h3 + h2 {
@@ -396,9 +405,7 @@
     margin-top: 45px;
   }
   .textrix blockquote + h3,
-  .textrix p + h3,
-  .textrix ul + h3,
-  .textrix ol + h3 {
+  .textrix p + h3 {
     margin-top: 28px;
   }
   .textrix h2 + h3 {
@@ -414,9 +421,7 @@
     margin-top: 31px;
   }
   .textrix blockquote + h4,
-  .textrix p + h4,
-  .textrix ul + h4,
-  .textrix ol + h4 {
+  .textrix p + h4 {
     margin-top: 22px;
   }
   .textrix h2 + h4 {
@@ -435,11 +440,7 @@
   .textrix blockquote + figure,
   .textrix p + figure,
   .textrix blockquote + .pre,
-  .textrix p + .pre,
-  .textrix ul + figure,
-  .textrix ol + figure,
-  .textrix ul + .pre,
-  .textrix ol + .pre {
+  .textrix p + .pre {
     margin-top: 35px;
   }
   .textrix h2 + figure,
@@ -460,9 +461,7 @@
   }
   .textrix .layoutFillWidth,
   .textrix blockquote + .layoutFillWidth,
-  .textrix p + .layoutFillWidth,
-  .textrix ul + .layoutFillWidth,
-  .textrix ol + .layoutFillWidth {
+  .textrix p + .layoutFillWidth {
     margin-top: 52px;
     margin-bottom: 52px;
   }
@@ -493,19 +492,60 @@
   .textrix .subtitle + p {
     margin-top: 10px;
   }
+
+  /* List spacing */
+  .textrix ul,
+  .textrix ol {
+    margin-top: 30px;
+  }
+
+  .textrix ul + ul,
+  .textrix ol + ol,
+  .textrix ul + ol,
+  .textrix ol + ul {
+    margin-top: 21px;
+  }
+
+  .textrix p + ul,
+  .textrix p + ol {
+    margin-top: 21px;
+  }
+
+  .textrix blockquote + ul,
+  .textrix blockquote + ol {
+    margin-top: 21px;
+  }
+
+  .textrix h2 + ul,
+  .textrix h2 + ol {
+    margin-top: 14px;
+  }
+
+  .textrix h3 + ul,
+  .textrix h3 + ol {
+    margin-top: 8px;
+  }
+
+  .textrix h4 + ul,
+  .textrix h4 + ol {
+    margin-top: 6px;
+  }
+
+  .textrix blockquote.pullquote + ul,
+  .textrix blockquote.pullquote + ol {
+    margin-top: 26px;
+  }
+
+  /* Nested list spacing for mobile */
+  .textrix li ul,
+  .textrix li ol {
+    margin-top: 10px;
+  }
 }
 
 @media print {
-  .textrix blockquote + ul,
-  .textrix blockquote + ol,
   .textrix blockquote + blockquote,
-  .textrix p + blockquote,
-  .textrix p + ul,
-  .textrix p + ol,
-  .textrix ul + ul,
-  .textrix ol + ol,
-  .textrix ul + blockquote,
-  .textrix ol + blockquote {
+  .textrix p + blockquote {
     margin-top: 20px;
   }
   .textrix p {
@@ -526,12 +566,7 @@
   .textrix blockquote.pullquote {
     font-size: 20.4px;
   }
-  .textrix li {
-    font-size: 14.28px;
-  }
-  .textrix ul.postList > li:before {
-    font-size: 11.42px;
-  }
+
   .textrix pre {
     font-size: 10.88px;
   }
@@ -563,8 +598,27 @@
   .textrix blockquote {
     border-left: 0.17em solid #000;
   }
+
+  /* List spacing */
+  .textrix blockquote + ul,
+  .textrix blockquote + ol,
+  .textrix p + ul,
+  .textrix p + ol,
+  .textrix ul + ul,
+  .textrix ol + ol,
+  .textrix ul + ol,
+  .textrix ol + ul {
+    margin-top: 20px;
+  }
+
   .textrix ul > li:before {
     padding-top: 3px;
+  }
+
+  /* Nested list spacing for smaller screens */
+  .textrix li ul,
+  .textrix li ol {
+    margin-top: 8px;
   }
 }
 
