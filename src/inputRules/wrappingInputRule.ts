@@ -1,10 +1,10 @@
-import type { Node as ProseMirrorNode, NodeType } from 'prosemirror-model';
-import { canJoin, findWrapping } from 'prosemirror-transform';
+import type { Node as ProseMirrorNode, NodeType } from "prosemirror-model";
+import { canJoin, findWrapping } from "prosemirror-transform";
 
-import type { Editor } from '../Editor';
-import { InputRule, type InputRuleFinder } from '../InputRule';
-import type { ExtendedRegExpMatchArray } from '../types';
-import { callOrReturn } from '../helpers/callOrReturn';
+import type { Editor } from "../Editor";
+import { InputRule, type InputRuleFinder } from "../InputRule";
+import type { ExtendedRegExpMatchArray } from "../types";
+import { callOrReturn } from "../helpers/callOrReturn";
 
 /**
  * Build an input rule for automatically wrapping a textblock when a
@@ -27,24 +27,31 @@ export function wrappingInputRule(config: {
   keepMarks?: boolean;
   keepAttributes?: boolean;
   editor?: Editor;
-  getAttributes?: Record<string, any> | ((match: ExtendedRegExpMatchArray) => Record<string, any>) | false | null;
-  joinPredicate?: (match: ExtendedRegExpMatchArray, node: ProseMirrorNode) => boolean;
+  getAttributes?:
+    | Record<string, any>
+    | ((match: ExtendedRegExpMatchArray) => Record<string, any>)
+    | false
+    | null;
+  joinPredicate?: (
+    match: ExtendedRegExpMatchArray,
+    node: ProseMirrorNode
+  ) => boolean;
 }) {
   return new InputRule({
     find: config.find,
     handler: ({ state, range, match }) => {
-      const attributes = callOrReturn(config.getAttributes, undefined, match) || {};
-      console.log('Range', range);
-      console.log('Attributes', attributes);
-      console.log('Type', config.type);
+      const attributes =
+        callOrReturn(config.getAttributes, undefined, match) || {};
+
+      // Get the text that's being deleted/replaced
+      const deletedText = state.doc.textBetween(range.from, range.to);
 
       const tr = state.tr.delete(range.from, range.to);
       const $start = tr.doc.resolve(range.from);
       const blockRange = $start.blockRange();
-      console.log('Block range', blockRange);
-      const wrapping = blockRange && findWrapping(blockRange, config.type, attributes);
+      const wrapping =
+        blockRange && findWrapping(blockRange, config.type, attributes);
 
-      console.log('Wrapping', wrapping);
       if (!wrapping) {
         return null;
       }
@@ -76,6 +83,11 @@ export function wrappingInputRule(config: {
         (!config.joinPredicate || config.joinPredicate(match, before))
       ) {
         tr.join(range.from - 1);
+      }
+
+      // Log the final state after wrapping
+      const $cursor = tr.selection.$from;
+      if ($cursor.parent.type.name === "paragraph") {
       }
     },
   });
